@@ -6,3 +6,7 @@ export async function authUrl(_: Request, res: Response): Promise<any> {
   const { url: twitter } = await Supabase.build().auth.signIn({ provider: 'twitter' }, process.env.API_URL ? { redirectTo: process.env.API_URL } : {})
   return res.send({ google, twitter })
 }
+
+export async function me(req: Request, res: Response): Promise<any> {
+  return res.send({ user: req.user })
+}
