@@ -1,0 +1,15 @@
+{
+  "name": "tamagotreal",
+  "version": "0.1.0",
+  "author": "M Gilang Januar <mgilangjanuar@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "web": "yarn workspace web",
+    "api": "yarn workspace api"
+  },
+  "workspaces": [
+    "web",
+    "api"
+  ]
+}
