@@ -10357,6 +10357,11 @@ react@^17.0.2:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
 
+reactjs-bottom-navigation@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/reactjs-bottom-navigation/-/reactjs-bottom-navigation-1.0.4.tgz#5f1f3a8dced94642af18f707e11831e5816b7d60"
+  integrity sha512-EMikvFFEly7YbLQXLn3VF4UDiHwAF5pKjUnTXBDrSacnwMnwzcXepCZGCLNYW1+ine6udmF/SPDX+hVxxOV95g==
+
 read-pkg-up@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/read-pkg-up/-/read-pkg-up-3.0.0.tgz#3ed496685dba0f8fe118d0691dc51f4a1ff96f07"

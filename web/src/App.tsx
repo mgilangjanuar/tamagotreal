@@ -1,14 +1,15 @@
 import { Layout } from 'antd'
+import 'antd/dist/antd.min.css'
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import { Route, Switch } from 'react-router-dom'
+import { Redirect, Route, Switch } from 'react-router-dom'
+import './App.css'
+import Dashboard from './pages/dashboard'
 import NotFound from './pages/errors/NotFound'
 import Home from './pages/Home'
-import Terms from './pages/Terms'
 import Privacy from './pages/Privacy'
+import Terms from './pages/Terms'
 
-import 'antd/dist/antd.min.css'
-import './App.css'
 
 function App(): React.ReactElement {
   return (
@@ -23,6 +24,8 @@ function App(): React.ReactElement {
         />
       </Helmet>
       <Switch>
+        <Route path="/dashboard/:page" exact component={Dashboard} />
+        <Route path="/dashboard" exact><Redirect to="/dashboard/main" /></Route>
         <Route path="/" exact component={Home} />
         <Route path="/terms" exact component={Terms} />
         <Route path="/privacy" exact component={Privacy} />

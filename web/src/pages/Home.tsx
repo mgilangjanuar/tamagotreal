@@ -23,7 +23,7 @@ const Home: React.FC = () => {
 
   return <div>
     <Navbar />
-    <Layout.Content style={{ minHeight: '86vh', position: 'relative' }}>
+    <Layout.Content style={{ minHeight: '76vh', position: 'relative' }}>
       <div style={{ textAlign: 'center', padding: '10px 20px', position: 'absolute', top: '50%', transform: 'translateY(-50%)', msTransform: 'translateY(-50%)', width: '100%' }}>
         <Typography.Paragraph>
           <img src="/tamagotchi.png" style={{ width: '100%', maxWidth: '600px' }} />
