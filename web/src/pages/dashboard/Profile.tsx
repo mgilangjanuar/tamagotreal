@@ -136,9 +136,6 @@ const PetForm: React.FC<PetFormProps> = ({ field, remove: removeField, form, ind
       </Typography.Paragraph>
     </Card>
     <Drawer title={form.getFieldValue('pets')?.[index]?.id ? `Update ${form.getFieldValue('pets')?.[index]?.name}` : 'Add Pet'} closable placement="right" visible={showDrawer} onClose={() => setShowDrawer(false)}>
-      <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 24 }} {...field} name={[field.name, 'id']} fieldKey={[field.fieldKey, 'id']}>
-        <Input type="hidden" />
-      </Form.Item>
       <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 24 }} {...field} label="Name" name={[field.name, 'name']} fieldKey={[field.fieldKey, 'name']} rules={[{ required: true, message: 'Please input the name' }]}>
         <Input />
       </Form.Item>
@@ -154,6 +151,9 @@ const PetForm: React.FC<PetFormProps> = ({ field, remove: removeField, form, ind
       </Form.Item>
       <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 24 }} {...field} label="Birth Date" name={[field.name, 'birth_date']} fieldKey={[field.fieldKey, 'birth_date']}>
         <DatePicker />
+      </Form.Item>
+      <Form.Item {...field} name={[field.name, 'id']} fieldKey={[field.fieldKey, 'id']}>
+        <Input type="hidden" />
       </Form.Item>
       <Form.Item style={{ marginTop: '20px' }}>
         <Space style={{ float: 'right' }}>
