@@ -50,9 +50,7 @@ const Profile: React.FC<Props> = ({ user }) => {
       <Form form={form} layout="vertical">
         <Form.List name="pets">
           {(fields, { add, remove }) => <>
-            {fields.map((field, index) => <>
-              <PetForm key={index} field={field} remove={remove} form={form} index={index} />
-            </>)}
+            {fields.map((field, index) => <PetForm key={index} field={field} remove={remove} form={form} index={index} />)}
             <Form.Item wrapperCol={{ span: 24 }}>
               <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
                 Add pet
@@ -136,33 +134,35 @@ const PetForm: React.FC<PetFormProps> = ({ field, remove: removeField, form, ind
       </Typography.Paragraph>
     </Card>
     <Drawer title={form.getFieldValue('pets')?.[index]?.id ? `Update ${form.getFieldValue('pets')?.[index]?.name}` : 'Add Pet'} closable placement="right" visible={showDrawer} onClose={() => setShowDrawer(false)}>
-      <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 24 }} {...field} label="Name" name={[field.name, 'name']} fieldKey={[field.fieldKey, 'name']} rules={[{ required: true, message: 'Please input the name' }]}>
-        <Input />
-      </Form.Item>
-      <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 24 }} {...field} label="Type" name={[field.name, 'type']} fieldKey={[field.fieldKey, 'type']} rules={[{ required: true, message: 'Please input the type' }]}>
-        <Select>
-          <Select.Option value="cat">🐱 Cat</Select.Option>
-          <Select.Option value="dog">🐶 Dog</Select.Option>
-          <Select.Option value="hamster">🐹 Hamster</Select.Option>
-        </Select>
-      </Form.Item>
-      <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 24 }} {...field} label="Breed" name={[field.name, 'breed']} fieldKey={[field.fieldKey, 'breed']}>
-        <Input />
-      </Form.Item>
-      <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 24 }} {...field} label="Birth Date" name={[field.name, 'birth_date']} fieldKey={[field.fieldKey, 'birth_date']}>
-        <DatePicker />
-      </Form.Item>
-      <Form.Item {...field} name={[field.name, 'id']} fieldKey={[field.fieldKey, 'id']}>
-        <Input type="hidden" />
-      </Form.Item>
-      <Form.Item style={{ marginTop: '20px' }}>
-        <Space style={{ float: 'right' }}>
-          <Popconfirm title="Are you sure to delete this?" onConfirm={removeItem}>
-            <Button type="link" danger icon={<DeleteOutlined />}>Remove</Button>
-          </Popconfirm>
-          <Button type="primary" icon={form.getFieldValue('pets')?.[index]?.id ? <EditOutlined /> : <SaveOutlined />} onClick={saveItem}>{form.getFieldValue('pets')?.[index]?.id ? 'Update' : 'Save'}</Button>
-        </Space>
-      </Form.Item>
+      <div key={`drawer-${index}`}>
+        <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 24 }} {...field} label="Name" name={[field.name, 'name']} fieldKey={[field.fieldKey, 'name']} rules={[{ required: true, message: 'Please input the name' }]}>
+          <Input />
+        </Form.Item>
+        <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 24 }} {...field} label="Type" name={[field.name, 'type']} fieldKey={[field.fieldKey, 'type']} rules={[{ required: true, message: 'Please input the type' }]}>
+          <Select>
+            <Select.Option value="cat">🐱 Cat</Select.Option>
+            <Select.Option value="dog">🐶 Dog</Select.Option>
+            <Select.Option value="hamster">🐹 Hamster</Select.Option>
+          </Select>
+        </Form.Item>
+        <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 24 }} {...field} label="Breed" name={[field.name, 'breed']} fieldKey={[field.fieldKey, 'breed']}>
+          <Input />
+        </Form.Item>
+        <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 24 }} {...field} label="Birth Date" name={[field.name, 'birth_date']} fieldKey={[field.fieldKey, 'birth_date']}>
+          <DatePicker />
+        </Form.Item>
+        <Form.Item hidden {...field} name={[field.name, 'id']} fieldKey={[field.fieldKey, 'id']}>
+          <Input type="hidden" />
+        </Form.Item>
+        <Form.Item style={{ marginTop: '20px' }}>
+          <Space style={{ float: 'right' }}>
+            <Popconfirm title="Are you sure to delete this?" onConfirm={removeItem}>
+              <Button type="link" danger icon={<DeleteOutlined />}>Remove</Button>
+            </Popconfirm>
+            <Button type="primary" icon={form.getFieldValue('pets')?.[index]?.id ? <EditOutlined /> : <SaveOutlined />} onClick={saveItem}>{form.getFieldValue('pets')?.[index]?.id ? 'Update' : 'Save'}</Button>
+          </Space>
+        </Form.Item>
+      </div>
     </Drawer>
   </Layout.Content>
 }

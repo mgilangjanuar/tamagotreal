@@ -24,7 +24,7 @@ export type Feed = {
   url: string,
   caption?: string,
   created_at: string,
-  pet_id: number
+  pet_id: string
 }
 
 declare module 'http' {
