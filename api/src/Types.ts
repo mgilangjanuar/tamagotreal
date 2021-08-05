@@ -29,7 +29,6 @@ export type Feed = {
 
 declare module 'http' {
   interface IncomingMessage {
-    rawBody?: any,
     user?: UserAuth
   }
 }
