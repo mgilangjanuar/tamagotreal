@@ -20,6 +20,9 @@ export async function create(req: Request, res: Response): Promise<any> {
   }
 
   const feed = await Supabase.build().from<Feed>('feeds').insert([req.body])
+  if (feed.error) {
+    throw { status: 400, body: { error: feed.error.message } }
+  }
   return res.send({ feed: feed.data[0] })
 }
 
@@ -49,6 +52,9 @@ export async function update(req: Request, res: Response): Promise<any> {
   }
 
   const feed = await Supabase.build().from<Feed>('feeds').update(req.body).eq('id', req.params.id)
+  if (feed.error) {
+    throw { status: 400, body: { error: feed.error.message } }
+  }
   return res.send({ feed: feed.data[0] })
 }
 

@@ -7,6 +7,9 @@ export async function create(req: Request, res: Response): Promise<any> {
     ...req.body,
     owner: req.user.email
   }])
+  if (pet.error) {
+    throw { status: 400, body: { error: pet.error.message } }
+  }
   return res.send({ pet: pet.data[0] })
 }
 
@@ -23,6 +26,9 @@ export async function find(req: Request, res: Response): Promise<any> {
 
 export async function retrieve(req: Request, res: Response): Promise<any> {
   const pet = await Supabase.build().from<Pet>('pets').select().eq('id', req.params.id)
+  if (pet.error) {
+    throw { status: 400, body: { error: pet.error.message } }
+  }
   return res.send({ pet: pet.data[0] })
 }
 

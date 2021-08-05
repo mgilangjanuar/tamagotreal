@@ -1,6 +1,5 @@
 import { Layout } from 'antd'
 import React, { useEffect } from 'react'
-import { useThemeSwitcher } from 'react-css-theme-switcher'
 import { RouteComponentProps, useHistory } from 'react-router-dom'
 import Navbar from '../../components/Navbar'
 import Navigation from '../../components/Navigation'
@@ -14,13 +13,8 @@ interface PageProps extends RouteComponentProps<{
 }> {}
 
 const Dashboard: React.FC<PageProps> = ({ match }) => {
-  const { switcher, themes } = useThemeSwitcher()
   const history = useHistory()
   const [user] = useMe()
-
-  useEffect(() => {
-    switcher({ theme: themes[user?.theme || 'light'] })
-  }, [user])
 
   useEffect(() => {
     if (user === null) {
