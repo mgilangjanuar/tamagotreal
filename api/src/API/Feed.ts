@@ -1,4 +1,6 @@
 import { Request, Response } from 'express'
+import url from 'url'
+import path from 'path'
 import { Supabase } from '../Service/Supabase'
 import { Feed, Pet } from '../Types'
 
@@ -62,5 +64,11 @@ export async function remove(req: Request, res: Response): Promise<any> {
   }
 
   await Supabase.build().from<Feed>('feeds').delete().eq('id', req.params.id)
+  try {
+    const filename = path.basename(url.parse(feed.data[0].url).pathname)
+    await Supabase.build().storage.from('medias').remove([`${req.user.email}/${filename}`])
+  } catch (error) {
+    // ignore
+  }
   return res.send({ feed: feed.data[0] })
 }
