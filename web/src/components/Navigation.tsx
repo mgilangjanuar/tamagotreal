@@ -1,4 +1,4 @@
-import { BugOutlined, HomeOutlined, UserOutlined } from '@ant-design/icons'
+import { HomeOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import BottomNavigation from 'reactjs-bottom-navigation'
@@ -16,7 +16,7 @@ const Navigation: React.FC<Props> = ({ page }) => {
   useEffect(() => {
     if (!page || page === 'main') {
       setIdx(0)
-    } else if (page === 'pet') {
+    } else if (page === 'post') {
       setIdx(1)
     } else if (page === 'profile') {
       setIdx(2)
@@ -26,7 +26,7 @@ const Navigation: React.FC<Props> = ({ page }) => {
   const changePage = (idx: number) => {
     let page = 'main'
     if (idx === 1) {
-      page = 'pet'
+      page = 'post'
     } else if (idx === 2) {
       page = 'profile'
     }
@@ -44,9 +44,9 @@ const Navigation: React.FC<Props> = ({ page }) => {
           onClick: () => changePage(0)
         },
         {
-          title: 'My Pets',
-          icon: <BugOutlined style={{ fontSize: '18px' }} />,
-          activeIcon: <BugOutlined style={{ fontSize: '18px', color: '#fff' }} />,
+          title: 'Post',
+          icon: <PlusOutlined style={{ fontSize: '18px' }} />,
+          activeIcon: <PlusOutlined style={{ fontSize: '18px', color: '#fff' }} />,
           onClick: () => changePage(1)
         },
         {
