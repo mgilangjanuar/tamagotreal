@@ -11,7 +11,7 @@ export type UserAuth = {
 }
 
 export type Pet = {
-  id?: number,
+  id?: string,
   name: string,
   type: string,
   breed?: string,
@@ -20,7 +20,7 @@ export type Pet = {
 }
 
 export type Feed = {
-  id?: number,
+  id?: string,
   url: string,
   caption?: string,
   created_at: string,
