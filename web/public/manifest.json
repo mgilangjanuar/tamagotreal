@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Tamagotreal",
+  "name": "Tamagotchi for your real pets",
   "icons": [
     {
       "src": "favicon.ico",
