@@ -34,11 +34,7 @@ app.use((req: Request, res: Response) => {
 
 // error handler
 app.use((err: { status?: number, body?: Record<string, any> }, _: Request, res: Response, __: NextFunction) => {
-  // console.error(err)
-  if (err.status) {
-    return res.status(err.status).send(err.body || { error: 'Something error' })
-  }
-  return res.status(500).send({ error: 'Something error' })
+  return res.status(err.status || 500).send(err.body || { error: 'Something error' })
 })
 
 app.listen(3000, () => console.log('listen at :3000...'))
