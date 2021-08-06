@@ -150,8 +150,8 @@ const PetForm: React.FC<PetFormProps> = ({ field, remove: removeField, form, ind
       message.error(errorRemove.data?.errorRemove || errorRemove.message || 'Something error')
     } else if (errorRemove === null) {
       message.success('Removed')
-      resetRemove()
       removeField(index)
+      resetRemove()
       setShowDrawer(false)
     }
   }, [errorRemove])
