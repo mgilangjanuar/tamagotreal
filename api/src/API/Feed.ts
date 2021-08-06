@@ -23,7 +23,12 @@ export async function create(req: Request, res: Response): Promise<any> {
 }
 
 export async function find(req: Request, res: Response): Promise<any> {
-  const feeds = await Supabase.build().from<Feed>('feeds').select('*, pet:pet_id(*)').match(req.query).order('created_at', { ascending: false })
+  const { rangeFrom, rangeTo, ...query } = req.query
+  const feeds = await Supabase.build().from<Feed>('feeds')
+    .select('*, pet:pet_id(*)')
+    .match(query)
+    .range(Number(rangeFrom) || 0, Number(rangeTo) || 9)
+    .order('created_at', { ascending: false })
   return res.send({ feeds: feeds.data })
 }
 
