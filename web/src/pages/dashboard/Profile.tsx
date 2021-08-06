@@ -89,7 +89,7 @@ const Profile: React.FC<Props> = ({ user }) => {
       </Form>
 
       <List dataSource={data}
-        loading={!data?.length}
+        loading={error === undefined}
         loadMore={<div style={{ textAlign: 'center', margin: '15px 10px 40px' }}>
           <Button shape="round"
             disabled={!feeds?.length || feeds?.length <= size}
