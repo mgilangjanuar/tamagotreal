@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
     <Typography.Paragraph>
       <Typography.Text>🐹 Tamagotreal &copy; 2021</Typography.Text><br />
       <Typography.Text type="secondary">
-        <Link to="/">Home</Link> &middot; <Link to="/terms">Terms</Link> &middot; <Link to="/privacy">Privacy</Link> &middot; <Link to="https://github.com/mgilangjanuar/tamagotreal"><GithubFilled /> GitHub</Link>
+        <Link to="/">Home</Link> &middot; <Link to="/terms">Terms</Link> &middot; <Link to="/privacy">Privacy</Link> &middot; <a href="https://github.com/mgilangjanuar/tamagotreal"><GithubFilled /> GitHub</a>
       </Typography.Text>
     </Typography.Paragraph>
     <br />
