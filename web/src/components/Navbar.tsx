@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const Navbar: React.FC = () => {
   return <Layout.Header>
-    <Link to="/"><div className="logo">🐹 Tamagotreal</div></Link>
+    <Link to="/dashboard"><div className="logo">🐹 Tamagotreal</div></Link>
   </Layout.Header>
 }
 

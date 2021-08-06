@@ -28,7 +28,7 @@ const Main: React.FC<Props> = ({ user }) => {
   return <Row style={{ minHeight: '85vh', padding: '20px 0 40px' }}>
     <Col lg={{ span: 10, offset: 7 }} md={{ span: 16, offset: 4 }} sm={{ span: 20, offset: 2 }} span={24}>
       {feeds?.map(feed => <Card style={{ marginBottom: '20px' }} hoverable cover={<img src={feed.url} alt={feed.url} />} actions={[
-        <Button key="like" onClick={() => likeFeed(feed.id)} type="text" danger icon={feed.likes?.includes(user.email) ? <HeartFilled /> : <HeartOutlined />}> &nbsp; {feed.likes?.length || 0}</Button>,
+        <Button key="like" onClick={() => likeFeed(feed.id)} type="text" danger icon={feed.likes?.includes(user.email) ? <HeartFilled /> : <HeartOutlined />}> &nbsp;{feed.likes?.length || 0}</Button>,
         <Button key="comment" type="text" icon={<CommentOutlined />}></Button>
       ]}>
         <Card.Meta

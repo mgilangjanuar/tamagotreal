@@ -79,8 +79,8 @@ const Post: React.FC<Props> = ({ user }) => {
         <Form.Item name="url" hidden>
           <Input type="hidden" />
         </Form.Item>
-        <Form.Item>
-          <Button block type="primary" icon={<SendOutlined />} htmlType="submit">Post</Button>
+        <Form.Item style={{ textAlign: 'right' }}>
+          <Button size="large" shape="round" type="primary" icon={<SendOutlined />} htmlType="submit">Post</Button>
         </Form.Item>
       </Form>
     </Col>
