@@ -60,8 +60,8 @@ const Main: React.FC<Props> = ({ user }) => {
           </Button>
         </div>}
         renderItem={feed => <List.Item key={feed.id}>
-          <Link to={`/feed/${feed.id}`}>
-            <Card style={{ width: '100%' }} hoverable cover={<img src={feed.url} alt={feed.url} />} actions={[
+          <Link style={{ width: '100%' }} to={`/feed/${feed.id}`}>
+            <Card hoverable cover={<img src={feed.url} alt={feed.url} />} actions={[
               <Button key="like" onClick={e => likeFeed(e, feed.id)} type="text" danger icon={feed.likes?.includes(user.email) ? <HeartFilled /> : <HeartOutlined />}> &nbsp;{feed.likes?.length || 0}</Button>,
               <Button key="comment" type="text" icon={<CommentOutlined />}></Button>
             ]}>
