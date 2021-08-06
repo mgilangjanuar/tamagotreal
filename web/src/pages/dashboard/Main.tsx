@@ -2,7 +2,7 @@ import { CommentOutlined, HeartFilled, HeartOutlined } from '@ant-design/icons'
 import { Avatar, Button, Card, Col, List, Row, Typography } from 'antd'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Navigation from '../../components/Navigation'
 import { useFind } from '../../hooks/feed/useFind'
 import { useLike } from '../../hooks/feed/useLike'
@@ -16,7 +16,6 @@ const Main: React.FC<Props> = ({ user }) => {
   const [offset, setOffset] = useState<number>(0)
   const [find, feeds, error, reset] = useFind()
   const [like, feed, errorLike, resetLike] = useLike()
-  const history = useHistory()
 
   const size = 8
 
@@ -54,23 +53,29 @@ const Main: React.FC<Props> = ({ user }) => {
       <List dataSource={data}
         loading={error === undefined}
         loadMore={<div style={{ textAlign: 'center' }}>
-          <Button shape="round" disabled={!feeds?.length} onClick={() => setOffset(data?.length || 0)}>{feeds?.length ? 'Load More' : 'End of Page'}</Button>
+          <Button shape="round"
+            disabled={!feeds?.length || feeds?.length <= size}
+            onClick={() => setOffset(data?.length || 0)}>
+            {!feeds?.length || feeds?.length <= size ? 'End of Page' : 'Load More'}
+          </Button>
         </div>}
         renderItem={feed => <List.Item key={feed.id}>
-          <Card onClick={() => history.push(`/feed/${feed.id}`)} style={{ width: '100%' }} hoverable cover={<img src={feed.url} alt={feed.url} />} actions={[
-            <Button key="like" onClick={e => likeFeed(e, feed.id)} type="text" danger icon={feed.likes?.includes(user.email) ? <HeartFilled /> : <HeartOutlined />}> &nbsp;{feed.likes?.length || 0}</Button>,
-            <Button key="comment" type="text" icon={<CommentOutlined />}></Button>
-          ]}>
-            <Card.Meta
-              title={feed.pet.name}
-              avatar={<Avatar src={feed.pet.avatar_url} />}
-              description={moment(feed.created_at).fromNow()} />
-            {feed.caption ? <div style={{ textOverflow: 'ellipsis', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
-              <Typography.Paragraph style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap', margin: '15px 0 0 0' }}>
-                {feed.caption}
-              </Typography.Paragraph>
-            </div> : ''}
-          </Card>
+          <Link to={`/feed/${feed.id}`}>
+            <Card style={{ width: '100%' }} hoverable cover={<img src={feed.url} alt={feed.url} />} actions={[
+              <Button key="like" onClick={e => likeFeed(e, feed.id)} type="text" danger icon={feed.likes?.includes(user.email) ? <HeartFilled /> : <HeartOutlined />}> &nbsp;{feed.likes?.length || 0}</Button>,
+              <Button key="comment" type="text" icon={<CommentOutlined />}></Button>
+            ]}>
+              <Card.Meta
+                title={feed.pet.name}
+                avatar={<Avatar src={feed.pet.avatar_url} />}
+                description={moment(feed.created_at).fromNow()} />
+              {feed.caption ? <div style={{ textOverflow: 'ellipsis', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+                <Typography.Paragraph style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap', margin: '15px 0 0 0' }}>
+                  {feed.caption}
+                </Typography.Paragraph>
+              </div> : ''}
+            </Card>
+          </Link>
         </List.Item>} />
     </Col>
     <Navigation page="main" />

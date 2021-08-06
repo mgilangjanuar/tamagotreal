@@ -6,7 +6,7 @@ import { FormListFieldData } from 'antd/lib/form/FormList'
 import JSCookie from 'js-cookie'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import Navigation from '../../components/Navigation'
 import { useCreate } from '../../hooks/pet/useCreate'
 import { useFind } from '../../hooks/pet/useFind'
@@ -33,6 +33,8 @@ const Profile: React.FC<Props> = ({ user }) => {
   const [offset, setOffset] = useState<number>(0)
   const [find, feeds, error, reset] = useFindFeeds()
 
+  const size = 8
+
   useEffect(() => {
     getPets({ owner: user?.email })
   }, [user])
@@ -43,9 +45,23 @@ const Profile: React.FC<Props> = ({ user }) => {
     })
   }, [pets])
 
-  // useEffect(() => {
-  //   setData([...data || [], ...feeds.filter(feed => !data?.find(d => d.id === feed.id))])
-  // }, [feeds])
+  useEffect(() => {
+    if (user) {
+      find({ rangeFrom: offset, rangeTo: offset + size, owner: user.email })
+    }
+  }, [user])
+
+  useEffect(() => {
+    setData([...data || [], ...feeds.filter(feed => !data?.find(d => d.id === feed.id))])
+  }, [feeds])
+
+  useEffect(() => reset(), [offset])
+
+  useEffect(() => {
+    if (error === undefined) {
+      find({ rangeFrom: offset, rangeTo: offset + size })
+    }
+  }, [error])
 
   const logout = () => {
     JSCookie.remove('authorization')
@@ -72,11 +88,18 @@ const Profile: React.FC<Props> = ({ user }) => {
         </Form.List>
       </Form>
 
-      <Row>
-        <List dataSource={data} renderItem={feed => <Col span={8}>
-          <Card cover={<img alt={feed.url} src={feed.url} />} />
-        </Col>} />
-      </Row>
+      <List dataSource={data}
+        loading={!data?.length}
+        loadMore={<div style={{ textAlign: 'center', margin: '15px 10px 40px' }}>
+          <Button shape="round"
+            disabled={!feeds?.length || feeds?.length <= size}
+            onClick={() => setOffset(data?.length || 0)}>
+            {!feeds?.length || feeds?.length <= size ? 'End of Page' : 'Load More'}
+          </Button>
+        </div>}
+        renderItem={feed => <Link to={`/feed/${feed.id}`}>
+          <img style={{ cursor: 'pointer', width: '31%', margin: '1.17%' }} alt={feed.url} src={feed.url} />
+        </Link>} />
     </Col>
     <Navigation page="profile" />
   </Row>

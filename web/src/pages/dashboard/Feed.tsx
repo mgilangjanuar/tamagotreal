@@ -180,7 +180,7 @@ const Feed: React.FC<PageProps> = ({ match }) => {
 
             <Card title={`Comments (${commentsData?.length}${(commentsData?.length || 0) > 0 ? '+' : ''})`}>
               <Form layout="horizontal" form={formComment} onFinish={finishComment}>
-                <Form.Item label="Comment as" wrapperCol={{ span: 16 }} labelCol={{ span: 8 }} name="pet_id" rules={[{ required: true, message: 'Please select the pet' }]}>
+                <Form.Item label="Comment as" wrapperCol={{ span: 18 }} labelCol={{ span: 6 }} name="pet_id" rules={[{ required: true, message: 'Please select the pet' }]}>
                   <Select>
                     {pets?.map(pet => <Select.Option value={pet.id}>{pet.name}</Select.Option>)}
                   </Select>
@@ -200,7 +200,11 @@ const Feed: React.FC<PageProps> = ({ match }) => {
             <List dataSource={commentsData}
               loading={errorComments === undefined}
               loadMore={<div style={{ textAlign: 'center', marginTop: '10px' }}>
-                <Button shape="round" disabled={!comments?.length} onClick={() => setOffset(commentsData?.length || 0)}>{comments?.length ? 'Load More' : 'End of Page'}</Button>
+                <Button shape="round"
+                  disabled={!comments?.length || comments?.length <= commentSize}
+                  onClick={() => setOffset(commentsData?.length || 0)}>
+                  {!comments?.length || comments?.length <= commentSize ? 'End of Page' : 'Load More'}
+                </Button>
               </div>}
               renderItem={comment => <List.Item key={comment?.id} style={{ padding: '0' }}>
                 <Card bordered={false} style={{ width: '100%' }}>
