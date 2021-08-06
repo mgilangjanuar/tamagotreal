@@ -54,7 +54,14 @@ export async function update(req: Request, res: Response): Promise<any> {
 }
 
 export async function remove(req: Request, res: Response): Promise<any> {
-  const feed = await Supabase.build().from<Feed>('feeds').delete().match({ id: req.params.id, owner: req.user.email })
+  const feed = await Supabase.build().from<Feed>('feeds').select().match({ id: req.params.id, owner: req.user.email })
+  if (!feed.data?.length) {
+    throw { status: 404, body: { error: 'Feed not found' } }
+  }
+
+  await Supabase.build().from<Comment>('comments').delete().match({ feed_id: feed.data[0].id })
+  await Supabase.build().from<Feed>('feeds').delete().match({ id: feed.data[0].id })
+
   try {
     const filename = path.basename(url.parse(feed.data[0].url).pathname)
     await Supabase.build().storage.from('medias').remove([`${req.user.email}/${filename}`])
