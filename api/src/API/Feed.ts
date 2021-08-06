@@ -10,12 +10,12 @@ export async function create(req: Request, res: Response): Promise<any> {
     throw { status: 400, body: { error: 'Pet ID is required' } }
   }
 
-  const pet = await Supabase.build().from<Pet>('pets').select().eq('id', petId).eq('owner', req.user.email)
+  const pet = await Supabase.build().from<Pet>('pets').select().match({ id: petId, owner: req.user.email })
   if (!pet.data?.length) {
     throw { status: 404, body: { error: 'Pet not found' } }
   }
 
-  const feed = await Supabase.build().from<Feed>('feeds').insert([req.body])
+  const feed = await Supabase.build().from<Feed>('feeds').insert([{ ...req.body, owner: req.user.email }])
   if (feed.error) {
     throw { status: 400, body: { error: feed.error.message } }
   }
@@ -23,13 +23,7 @@ export async function create(req: Request, res: Response): Promise<any> {
 }
 
 export async function find(req: Request, res: Response): Promise<any> {
-  const criteria = Object.keys(req.query || {})?.[0]
-  let feeds: any
-  if (!criteria) {
-    feeds = await Supabase.build().from<Feed>('feeds').select()
-  } else {
-    feeds = await Supabase.build().from<Feed>('feeds').select().eq(criteria as keyof Feed, req.query[criteria] as string)
-  }
+  const feeds = await Supabase.build().from<Feed>('feeds').select().match(req.query)
   return res.send({ feeds: feeds.data })
 }
 
@@ -47,7 +41,7 @@ export async function update(req: Request, res: Response): Promise<any> {
     }
   }
 
-  const feed = await Supabase.build().from<Feed>('feeds').update(req.body).eq('id', req.params.id)
+  const feed = await Supabase.build().from<Feed>('feeds').update({ ...req.body, owner: req.user.email }).eq('id', req.params.id)
   if (feed.error) {
     throw { status: 400, body: { error: feed.error.message } }
   }
@@ -55,17 +49,7 @@ export async function update(req: Request, res: Response): Promise<any> {
 }
 
 export async function remove(req: Request, res: Response): Promise<any> {
-  const feed = await Supabase.build().from<Feed>('feeds').select().eq('id', req.params.id)
-  if (!feed.data?.length) {
-    throw { status: 404, body: { error: 'Feed not found' } }
-  }
-
-  const pet = await Supabase.build().from<Pet>('pets').select().eq('id', feed.data[0].id).eq('owner', req.user.email)
-  if (!pet.data?.length) {
-    throw { status: 404, body: { error: 'Pet not found' } }
-  }
-
-  await Supabase.build().from<Feed>('feeds').delete().eq('id', req.params.id)
+  const feed = await Supabase.build().from<Feed>('feeds').delete().match({ id: req.params.id, owner: req.user.email })
   try {
     const filename = path.basename(url.parse(feed.data[0].url).pathname)
     await Supabase.build().storage.from('medias').remove([`${req.user.email}/${filename}`])

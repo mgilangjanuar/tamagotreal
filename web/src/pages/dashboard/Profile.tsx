@@ -52,7 +52,7 @@ const Profile: React.FC<Props> = ({ user }) => {
         <Form.List name="pets">
           {(fields, { add, remove }) => <>
             {fields.map((field, index) => <PetForm key={index} field={field} remove={remove} form={form} index={index} />)}
-            <Form.Item wrapperCol={{ span: 24 }}>
+            <Form.Item wrapperCol={{ span: 24 }} style={{ marginTop: '5px' }}>
               <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
                 Add pet
               </Button>
@@ -150,14 +150,12 @@ const PetForm: React.FC<PetFormProps> = ({ field, remove: removeField, form, ind
           </Typography.Paragraph>
         </Col>
         <Col span={16} md={19} sm={18}>
-          <Typography.Title level={4} style={{ marginBottom: 0, marginTop: form.getFieldValue('pets')?.[index]?.breed || form.getFieldValue('pets')?.[index]?.birth_date ? '5px' : '15px' }}>
+          <Typography.Title level={4} style={{ marginBottom: 0, marginTop: form.getFieldValue('pets')?.[index]?.breed ? '3px' : '13px' }}>
             {form.getFieldValue('pets')?.[index]?.name || 'Unknown'}
           </Typography.Title>
           <Typography.Paragraph>
             <Typography.Text type="secondary">
               {form.getFieldValue('pets')?.[index]?.breed}
-              {form.getFieldValue('pets')?.[index]?.breed && form.getFieldValue('pets')?.[index]?.birth_date ? ' · ' : ''}
-              {form.getFieldValue('pets')?.[index]?.birth_date?.format('YYYY-MM-DD') || ''}
             </Typography.Text>
           </Typography.Paragraph>
         </Col>

@@ -25,7 +25,18 @@ export type Feed = {
   url: string,
   caption?: string,
   created_at: string,
-  pet_id: string
+  likes?: string[],
+  pet_id: string,
+  owner: string
+}
+
+export type Comment = {
+  id?: string,
+  feed_id: string,
+  content: string,
+  pet_name: string,
+  created_at: string,
+  owner: string
 }
 
 declare module 'http' {
