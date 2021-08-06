@@ -126,7 +126,11 @@ const PetForm: React.FC<PetFormProps> = ({ field, remove: removeField, form, ind
   useEffect(() => {
     if (pet) {
       form.setFieldsValue({
-        pets: form.getFieldValue('pets')?.map((data: any, i: number) => i === index ? pet : data)
+        pets: form.getFieldValue('pets')?.map((data: any, i: number) => i === index ? {
+          ...pet,
+          birth_date:
+            pet.birth_date ? moment(pet.birth_date, 'YYYY-MM-DD') : null
+        } : data)
       })
     }
   }, [pet])
@@ -248,7 +252,7 @@ const PetForm: React.FC<PetFormProps> = ({ field, remove: removeField, form, ind
           <Input />
         </Form.Item>
         <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 24 }} {...field} label="Birth Date" name={[field.name, 'birth_date']} fieldKey={[field.fieldKey, 'birth_date']}>
-          <DatePicker />
+          <DatePicker format="YYYY-MM-DD" />
         </Form.Item>
         <Form.Item hidden {...field} name={[field.name, 'id']} fieldKey={[field.fieldKey, 'id']}>
           <Input type="hidden" />
