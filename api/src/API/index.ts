@@ -1,9 +1,10 @@
 import { Router } from 'express'
 import { RequestWrapper } from '../Util/RequestWrapper'
 import { authUrl, me } from './Auth'
-import { create as createFeed, find as findFeed, remove as removeFeed, retrieve as retrieveFeed, update as updateFeed, upload } from './Feed'
+import { create as createFeed, find as findFeed, remove as removeFeed, retrieve as retrieveFeed, update as updateFeed } from './Feed'
 import { JWTAuth, multerHandler } from './Middleware'
 import { create as createPet, find as findPet, remove as removePet, retrieve as retrievePet, update as updatePet } from './Pet'
+import { upload } from './Upload'
 
 export function API(): Router {
   const router = Router()
@@ -11,6 +12,9 @@ export function API(): Router {
   // auth
   router.get('/authUrl', RequestWrapper(authUrl))
   router.get('/users/me', JWTAuth, RequestWrapper(me))
+
+  // upload
+  router.post('/upload', JWTAuth, multerHandler, RequestWrapper(upload))
 
   // pet
   router.post('/pets', JWTAuth, RequestWrapper(createPet))
@@ -20,7 +24,6 @@ export function API(): Router {
   router.delete('/pets/:id', JWTAuth, RequestWrapper(removePet))
 
   // feed
-  router.post('/feeds/upload', JWTAuth, multerHandler, RequestWrapper(upload))
   router.post('/feeds', JWTAuth, RequestWrapper(createFeed))
   router.get('/feeds', JWTAuth, RequestWrapper(findFeed))
   router.get('/feeds/:id', JWTAuth, RequestWrapper(retrieveFeed))

@@ -14,13 +14,7 @@ export async function create(req: Request, res: Response): Promise<any> {
 }
 
 export async function find(req: Request, res: Response): Promise<any> {
-  const criteria = Object.keys(req.query || {})?.[0]
-  let pets: any
-  if (!criteria) {
-    pets = await Supabase.build().from<Pet>('pets').select()
-  } else {
-    pets = await Supabase.build().from<Pet>('pets').select().eq(criteria as keyof Pet, req.query[criteria] as string)
-  }
+  const pets = await Supabase.build().from<Pet>('pets').select().match(req.query)
   return res.send({ pets: pets.data })
 }
 
@@ -41,7 +35,12 @@ export async function update(req: Request, res: Response): Promise<any> {
 }
 
 export async function remove(req: Request, res: Response): Promise<any> {
-  const pet = await Supabase.build().from<Pet>('pets').delete().eq('id', req.params.id).eq('owner', req.user.email)
+  let pet = await Supabase.build().from<Pet>('pets').select().match({ id: req.params.id, owner: req.user.email })
+  await Supabase.build().from<Pet>('feeds').delete().match({ pet_id: pet.data[0].id })
+  pet = await Supabase.build().from<Pet>('pets').delete().match({ id: req.params.id, owner: req.user.email })
+  if (pet.error) {
+    throw { status: 400, body: { error: pet.error.message } }
+  }
   if (!pet.data?.length) {
     throw { status: 404, body: { error: 'Pet not found' } }
   }

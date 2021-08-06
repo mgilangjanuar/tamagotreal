@@ -4,10 +4,6 @@ import path from 'path'
 import { Supabase } from '../Service/Supabase'
 import { Feed, Pet } from '../Types'
 
-export async function upload(req: Request, res: Response): Promise<any> {
-  return res.send({ file: req.file })
-}
-
 export async function create(req: Request, res: Response): Promise<any> {
   const { pet_id: petId } = req.body
   if (!petId) {

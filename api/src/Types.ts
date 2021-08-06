@@ -14,6 +14,7 @@ export type Pet = {
   id?: string,
   name: string,
   type: string,
+  avatar_url: string,
   breed?: string,
   birth_date?: Date,
   owner: string

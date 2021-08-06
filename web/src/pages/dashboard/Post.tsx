@@ -21,9 +21,7 @@ const Post: React.FC<Props> = ({ user }) => {
   }, [user])
 
   useEffect(() => {
-    if (img) {
-      form.setFieldsValue({ url: img.file.Location })
-    }
+    form.setFieldsValue({ url: img?.file.Location })
   }, [img])
 
   useEffect(() => {
@@ -55,7 +53,7 @@ const Post: React.FC<Props> = ({ user }) => {
               maxCount={1}
               withCredentials
               listType="picture-card"
-              action={`${process.env.REACT_APP_API_URL}/api/feeds/upload`}
+              action={`${process.env.REACT_APP_API_URL}/api/upload`}
               name="upload"
               onChange={({ file }) => setImg(file?.xhr ? JSON.parse(file?.xhr.response) : undefined)}>
               <UploadOutlined /> &nbsp; Upload

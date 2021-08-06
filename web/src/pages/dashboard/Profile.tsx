@@ -1,5 +1,6 @@
-import { DeleteOutlined, EditOutlined, LogoutOutlined, PlusOutlined, SaveOutlined } from '@ant-design/icons'
-import { Button, Card, Col, DatePicker, Drawer, Form, Input, Layout, message, Popconfirm, Row, Select, Space, Typography } from 'antd'
+import { DeleteOutlined, EditOutlined, LogoutOutlined, PlusOutlined, SaveOutlined, UploadOutlined } from '@ant-design/icons'
+import { Avatar, Button, Card, Col, DatePicker, Drawer, Form, Input, Layout, message, Popconfirm, Row, Select, Skeleton, Space, Typography, Upload } from 'antd'
+import ImgCrop from 'antd-img-crop'
 import { FormInstance, useForm } from 'antd/lib/form/Form'
 import { FormListFieldData } from 'antd/lib/form/FormList'
 import JSCookie from 'js-cookie'
@@ -68,6 +69,18 @@ const PetForm: React.FC<PetFormProps> = ({ field, remove: removeField, form, ind
   const [save, errorCreate, resetCreate] = useCreate()
   const [remove, errorRemove, resetRemove] = useRemove()
   const [update, errorUpdate, resetUpdate] = useUpdate()
+  const [img, setImg] = useState<any>()
+
+  useEffect(() => {
+    if (form.getFieldValue('pets')?.[index]?.avatar_url) {
+      setImg({
+        uid: '1',
+        name: form.getFieldValue('pets')?.[index]?.avatar_url.split(/(\\|\/)/g).pop() || 'blank',
+        status: 'done',
+        url: form.getFieldValue('pets')?.[index]?.avatar_url
+      })
+    }
+  }, [form])
 
   useEffect(() => {
     if (errorCreate) {
@@ -100,6 +113,17 @@ const PetForm: React.FC<PetFormProps> = ({ field, remove: removeField, form, ind
     }
   }, [errorUpdate])
 
+  useEffect(() => {
+    form.setFieldsValue({
+      pets: form.getFieldValue('pets')?.map((pet: any, i: number) => {
+        if (i === index) {
+          return { ...pet, avatar_url: img?.url }
+        }
+        return pet
+      })
+    })
+  }, [img])
+
   const saveItem = () => {
     if (form.getFieldValue('pets')?.[index]?.id) {
       update(form.getFieldValue('pets')?.[index]?.id, form.getFieldValue('pets')?.[index])
@@ -117,24 +141,48 @@ const PetForm: React.FC<PetFormProps> = ({ field, remove: removeField, form, ind
     }
   }
 
-  return <Layout.Content style={{ padding: '8px 0' }}>
+  return <Layout.Content style={{ padding: '5px 0' }}>
     <Card style={{ cursor: 'pointer' }} onClick={() => setShowDrawer(true)}>
-      <Typography.Title level={4}>
-        {form.getFieldValue('pets')?.[index]?.type === 'cat' ? '🐱' : ''}
-        {form.getFieldValue('pets')?.[index]?.type === 'dog' ? '🐶' : ''}
-        {form.getFieldValue('pets')?.[index]?.type === 'hamster' ? '🐹' : ''}
-        &nbsp; {form.getFieldValue('pets')?.[index]?.name || 'Unknown'}
-      </Typography.Title>
-      <Typography.Paragraph>
-        <Typography.Text type="secondary">
-          {form.getFieldValue('pets')?.[index]?.breed}
-          {form.getFieldValue('pets')?.[index]?.breed && form.getFieldValue('pets')?.[index]?.birth_date ? ' · ' : ''}
-          {form.getFieldValue('pets')?.[index]?.birth_date?.format('YYYY-MM-DD') || ''}
-        </Typography.Text>
-      </Typography.Paragraph>
+      <Row gutter={16}>
+        <Col span={8} md={5} sm={6}>
+          <Typography.Paragraph style={{ textAlign: 'center', marginBottom: 0 }}>
+            {form.getFieldValue('pets')?.[index]?.avatar_url ? <Avatar src={form.getFieldValue('pets')?.[index]?.avatar_url} style={{ width: 64, height: 64 }} /> : <Skeleton.Image style={{ width: 64, height: 64 }} />}
+          </Typography.Paragraph>
+        </Col>
+        <Col span={16} md={19} sm={18}>
+          <Typography.Title level={4} style={{ marginBottom: 0, marginTop: form.getFieldValue('pets')?.[index]?.breed || form.getFieldValue('pets')?.[index]?.birth_date ? '5px' : '15px' }}>
+            {form.getFieldValue('pets')?.[index]?.name || 'Unknown'}
+          </Typography.Title>
+          <Typography.Paragraph>
+            <Typography.Text type="secondary">
+              {form.getFieldValue('pets')?.[index]?.breed}
+              {form.getFieldValue('pets')?.[index]?.breed && form.getFieldValue('pets')?.[index]?.birth_date ? ' · ' : ''}
+              {form.getFieldValue('pets')?.[index]?.birth_date?.format('YYYY-MM-DD') || ''}
+            </Typography.Text>
+          </Typography.Paragraph>
+        </Col>
+      </Row>
     </Card>
     <Drawer title={form.getFieldValue('pets')?.[index]?.id ? `Update ${form.getFieldValue('pets')?.[index]?.name}` : 'Add Pet'} closable placement="right" visible={showDrawer} onClose={() => setShowDrawer(false)}>
       <div key={`drawer-${index}`}>
+        <Form.Item rules={[{ required: true, message: 'Please upload the avatar' }]}>
+          <ImgCrop>
+            <Upload
+              maxCount={1}
+              withCredentials
+              listType="picture-card"
+              action={`${process.env.REACT_APP_API_URL}/api/upload`}
+              name="upload"
+              fileList={img ? [img] : []}
+              onRemove={() => setImg(undefined)}
+              onChange={({ fileList }) => setImg({
+                ...fileList?.[0] || {},
+                url: fileList?.[0].response?.file.Location || undefined
+              })}>
+              <UploadOutlined /> &nbsp; Upload
+            </Upload>
+          </ImgCrop>
+        </Form.Item>
         <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 24 }} {...field} label="Name" name={[field.name, 'name']} fieldKey={[field.fieldKey, 'name']} rules={[{ required: true, message: 'Please input the name' }]}>
           <Input />
         </Form.Item>
@@ -152,6 +200,9 @@ const PetForm: React.FC<PetFormProps> = ({ field, remove: removeField, form, ind
           <DatePicker />
         </Form.Item>
         <Form.Item hidden {...field} name={[field.name, 'id']} fieldKey={[field.fieldKey, 'id']}>
+          <Input type="hidden" />
+        </Form.Item>
+        <Form.Item hidden {...field} name={[field.name, 'avatar_url']} fieldKey={[field.fieldKey, 'avatar_url']}>
           <Input type="hidden" />
         </Form.Item>
         <Form.Item style={{ marginTop: '20px' }}>
