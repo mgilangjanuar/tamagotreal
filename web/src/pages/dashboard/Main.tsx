@@ -49,7 +49,7 @@ const Main: React.FC<Props> = ({ user }) => {
   }
 
   return <Row style={{ minHeight: '85vh', padding: '0 0 70px' }}>
-    <Col lg={{ span: 10, offset: 7 }} md={{ span: 16, offset: 4 }} sm={{ span: 20, offset: 2 }} span={24}>
+    <Col lg={{ span: 8, offset: 8 }} md={{ span: 16, offset: 4 }} sm={{ span: 20, offset: 2 }} span={24}>
       <List dataSource={data}
         loading={error === undefined}
         loadMore={<div style={{ textAlign: 'center' }}>
