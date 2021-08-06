@@ -45,11 +45,11 @@ const Profile: React.FC<Props> = ({ user }) => {
     })
   }, [pets])
 
-  useEffect(() => {
-    if (user) {
-      find({ rangeFrom: offset, rangeTo: offset + size, owner: user.email })
-    }
-  }, [user])
+  // useEffect(() => {
+  //   if (user) {
+  //     find({ rangeFrom: offset, rangeTo: offset + size, owner: user.email })
+  //   }
+  // }, [user])
 
   useEffect(() => {
     setData([...data || [], ...feeds.filter(feed => !data?.find(d => d.id === feed.id))])
@@ -58,10 +58,10 @@ const Profile: React.FC<Props> = ({ user }) => {
   useEffect(() => reset(), [offset])
 
   useEffect(() => {
-    if (error === undefined) {
-      find({ rangeFrom: offset, rangeTo: offset + size })
+    if (error === undefined && user) {
+      find({ rangeFrom: offset, rangeTo: offset + size, owner: user.email })
     }
-  }, [error])
+  }, [error, user])
 
   const logout = () => {
     JSCookie.remove('authorization')

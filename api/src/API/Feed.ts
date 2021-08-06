@@ -80,7 +80,7 @@ export async function like(req: Request, res: Response): Promise<any> {
     .update({
       likes: !feed.data[0].likes?.includes(req.user.email) ? [...feed.data[0].likes || [], req.user.email] : feed.data[0].likes?.filter(like => like !== req.user.email)
     })
-    .match({ id: req.params.id, owner: req.user.email })
+    .match({ id: req.params.id })
   if (feed.error) {
     throw { status: 400, body: { error: feed.error.message } }
   }
