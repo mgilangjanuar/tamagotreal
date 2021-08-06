@@ -98,7 +98,7 @@ const Profile: React.FC<Props> = ({ user }) => {
           </Button>
         </div>}
         renderItem={feed => <Link to={`/feed/${feed.id}`}>
-          <img style={{ cursor: 'pointer', width: '31%', margin: '1.17%' }} alt={feed.url} src={feed.url} />
+          <img style={{ cursor: 'pointer', width: '31%', margin: '1.13%' }} alt={feed.url} src={feed.url} />
         </Link>} />
     </Col>
     <Navigation page="profile" />
