@@ -7,6 +7,17 @@ export async function authUrl(_: Request, res: Response): Promise<any> {
   return res.send({ google, twitter })
 }
 
+export async function refreshToken(req: Request, res: Response): Promise<any> {
+  if (!req.body.refreshToken) {
+    throw { status: 400, body: { error: 'refreshToken is required' } }
+  }
+  const { error, data } = await Supabase.build().auth.api.refreshAccessToken(req.body.refreshToken)
+  if (error) {
+    throw { status: 401, body: { error: error.message } }
+  }
+  return res.send(data)
+}
+
 export async function me(req: Request, res: Response): Promise<any> {
   return res.send({ user: req.user })
 }

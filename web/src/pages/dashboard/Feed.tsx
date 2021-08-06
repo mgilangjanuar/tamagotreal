@@ -38,7 +38,7 @@ const Feed: React.FC<PageProps> = ({ match }) => {
   const [findComments, comments, errorComments, resetComments] = useFindComments()
   const [removeComment, commentRemoved, errorRemoveComment, resetRemoveComment] = useRemove()
 
-  const commentSize = 1
+  const commentSize = 8
 
   useEffect(() => {
     if (user === null) {

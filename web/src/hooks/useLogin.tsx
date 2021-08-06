@@ -1,16 +1,26 @@
 import { GoogleOutlined, TwitterOutlined } from '@ant-design/icons'
 import { Button, Modal, Tooltip, Typography } from 'antd'
-import React, { useState } from 'react'
+import JSCookie from 'js-cookie'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import { useAuthUrl } from './useAuthUrl'
 import { useMe } from './useMe'
+import { useRefreshToken } from './useRefreshToken'
 
 export function useLogin(): [() => void, React.FC, any] {
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [refreshToken] = useRefreshToken()
 
   const url = useAuthUrl()
-  const [user] = useMe()
+  const [user, refetch] = useMe()
   const history = useHistory()
+
+  useEffect(() => {
+    if (!user && JSCookie.get('refresh_token')) {
+      refreshToken()
+      refetch()
+    }
+  }, [user])
 
   return [() => {
     if (user) {

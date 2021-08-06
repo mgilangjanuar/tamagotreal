@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { RequestWrapper } from '../Util/RequestWrapper'
-import { authUrl, me } from './Auth'
+import { authUrl, me, refreshToken } from './Auth'
 import { create as createComment, find as findComment, remove as removeComment, retrieve as retrieveComment, update as updateComment } from './Comment'
 import { create as createFeed, find as findFeed, like, remove as removeFeed, retrieve as retrieveFeed, update as updateFeed } from './Feed'
 import { JWTAuth, multerHandler } from './Middleware'
@@ -12,6 +12,7 @@ export function API(): Router {
 
   // auth
   router.get('/authUrl', RequestWrapper(authUrl))
+  router.post('/auth/refreshToken', RequestWrapper(refreshToken))
   router.get('/users/me', JWTAuth, RequestWrapper(me))
 
   // upload

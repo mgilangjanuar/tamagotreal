@@ -1,8 +1,10 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import { useRefreshToken } from './useRefreshToken'
 
 export function useMe(): [any | undefined, () => void] {
   const [user, setUser] = useState<any>(undefined)
+  const [refreshToken] = useRefreshToken()
 
   useEffect(() => {
     if (user === undefined) {
@@ -10,7 +12,10 @@ export function useMe(): [any | undefined, () => void] {
         .then(({ data }) => {
           setUser(data.user)
         })
-        .catch(() => {
+        .catch((error) => {
+          if (error.response.status === 401) {
+            refreshToken()
+          }
           setUser(null)
         })
     }

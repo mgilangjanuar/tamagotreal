@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined, LogoutOutlined, PlusOutlined, SaveOutlined, UploadOutlined } from '@ant-design/icons'
-import { Avatar, Button, Card, Col, DatePicker, Drawer, Empty, Form, Input, Layout, message, Popconfirm, Row, Select, Skeleton, Space, Typography, Upload } from 'antd'
+import { Avatar, Button, Card, Col, DatePicker, Drawer, Empty, Form, Input, Layout, List, message, Popconfirm, Row, Select, Skeleton, Space, Typography, Upload } from 'antd'
 import ImgCrop from 'antd-img-crop'
 import { FormInstance, useForm } from 'antd/lib/form/Form'
 import { FormListFieldData } from 'antd/lib/form/FormList'
@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom'
 import Navigation from '../../components/Navigation'
 import { useCreate } from '../../hooks/pet/useCreate'
 import { useFind } from '../../hooks/pet/useFind'
+import { useFind as useFindFeeds } from '../../hooks/feed/useFind'
 import { useRemove } from '../../hooks/pet/useRemove'
 import { useUpdate } from '../../hooks/pet/useUpdate'
 
@@ -28,6 +29,9 @@ const Profile: React.FC<Props> = ({ user }) => {
   const history = useHistory()
   const [form] = useForm()
   const [getPets, pets] = useFind()
+  const [data, setData] = useState<any[]>()
+  const [offset, setOffset] = useState<number>(0)
+  const [find, feeds, error, reset] = useFindFeeds()
 
   useEffect(() => {
     getPets({ owner: user?.email })
@@ -39,8 +43,13 @@ const Profile: React.FC<Props> = ({ user }) => {
     })
   }, [pets])
 
+  // useEffect(() => {
+  //   setData([...data || [], ...feeds.filter(feed => !data?.find(d => d.id === feed.id))])
+  // }, [feeds])
+
   const logout = () => {
     JSCookie.remove('authorization')
+    JSCookie.remove('refresh_token')
     history.replace('/')
   }
   return <Row style={{ minHeight: '85vh', padding: '20px 0' }}>
@@ -62,6 +71,12 @@ const Profile: React.FC<Props> = ({ user }) => {
           </>}
         </Form.List>
       </Form>
+
+      <Row>
+        <List dataSource={data} renderItem={feed => <Col span={8}>
+          <Card cover={<img alt={feed.url} src={feed.url} />} />
+        </Col>} />
+      </Row>
     </Col>
     <Navigation page="profile" />
   </Row>

@@ -18,7 +18,7 @@ const Main: React.FC<Props> = ({ user }) => {
   const [like, feed, errorLike, resetLike] = useLike()
   const history = useHistory()
 
-  const size = 1
+  const size = 8
 
   useEffect(() => {
     if (error === undefined) {
