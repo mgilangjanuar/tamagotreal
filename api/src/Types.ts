@@ -34,7 +34,7 @@ export type Comment = {
   id?: string,
   feed_id: string,
   content: string,
-  pet_name: string,
+  pet_id: string,
   created_at: string,
   owner: string
 }

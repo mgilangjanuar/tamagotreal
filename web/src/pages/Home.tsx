@@ -13,6 +13,7 @@ const Home: React.FC = () => {
     const token = QueryString.decode(window.location.hash.replace(/^\#/gi, ''))
     if (token.access_token) {
       JSCookie.set('authorization', token.access_token)
+      JSCookie.set('refresh_token', token.refresh_token)
       window.location.replace('/dashboard')
     }
   }, [])
