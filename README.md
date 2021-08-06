@@ -33,6 +33,7 @@ This is the open source project of pet social media to expose your cute pet and 
 - [ ] chat room
 - [ ] stories
 - [ ] share feed
+- [ ] notification
 
 ## Getting Started
 
