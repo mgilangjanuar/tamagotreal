@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined, LogoutOutlined, PlusOutlined, SaveOutlined, UploadOutlined } from '@ant-design/icons'
-import { Avatar, Button, Card, Col, DatePicker, Drawer, Form, Input, Layout, message, Popconfirm, Row, Select, Skeleton, Space, Typography, Upload } from 'antd'
+import { Avatar, Button, Card, Col, DatePicker, Drawer, Empty, Form, Input, Layout, message, Popconfirm, Row, Select, Skeleton, Space, Typography, Upload } from 'antd'
 import ImgCrop from 'antd-img-crop'
 import { FormInstance, useForm } from 'antd/lib/form/Form'
 import { FormListFieldData } from 'antd/lib/form/FormList'
@@ -52,6 +52,7 @@ const Profile: React.FC<Props> = ({ user }) => {
       <Form form={form} layout="vertical">
         <Form.List name="pets">
           {(fields, { add, remove }) => <>
+            {!fields?.length ? <Empty style={{ marginBottom: '20px' }} /> : ''}
             {fields.map((field, index) => <PetForm key={index} field={field} remove={remove} form={form} index={index} />)}
             <Form.Item wrapperCol={{ span: 24 }} style={{ marginTop: '5px' }}>
               <Button shape="round" type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
@@ -127,10 +128,14 @@ const PetForm: React.FC<PetFormProps> = ({ field, remove: removeField, form, ind
   }, [img])
 
   const saveItem = () => {
-    if (form.getFieldValue('pets')?.[index]?.id) {
-      update(form.getFieldValue('pets')?.[index]?.id, form.getFieldValue('pets')?.[index])
+    if (form.getFieldValue('pets')?.[index]?.name && form.getFieldValue('pets')?.[index]?.avatar_url && form.getFieldValue('pets')?.[index]?.type) {
+      if (form.getFieldValue('pets')?.[index]?.id) {
+        update(form.getFieldValue('pets')?.[index]?.id, form.getFieldValue('pets')?.[index])
+      } else {
+        save(form.getFieldValue('pets')?.[index])
+      }
     } else {
-      save(form.getFieldValue('pets')?.[index])
+      message.error('Please fill all required fields')
     }
   }
 
