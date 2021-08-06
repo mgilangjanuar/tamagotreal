@@ -80,7 +80,7 @@ const Post: React.FC<Props> = ({ user }) => {
           <Input type="hidden" />
         </Form.Item>
         <Form.Item style={{ textAlign: 'right' }}>
-          <Button size="large" shape="round" type="primary" icon={<SendOutlined />} htmlType="submit">Post</Button>
+          <Button size="large" shape="round" type="primary" htmlType="submit">Post <SendOutlined /></Button>
         </Form.Item>
       </Form>
     </Col>

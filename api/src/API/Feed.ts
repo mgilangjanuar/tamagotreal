@@ -40,7 +40,7 @@ export async function retrieve(req: Request, res: Response): Promise<any> {
 export async function update(req: Request, res: Response): Promise<any> {
   const { pet_id: petId } = req.body
   if (petId) {
-    const pet = await Supabase.build().from<Pet>('pets').select().eq('id', petId).eq('owner', req.user.email)
+    const pet = await Supabase.build().from<Pet>('pets').select().match({ id: petId, owner: req.user.email })
     if (!pet.data?.length) {
       throw { status: 404, body: { error: 'Pet not found' } }
     }

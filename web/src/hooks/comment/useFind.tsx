@@ -6,9 +6,9 @@ export function useFind(): [(data: Record<string, any>) => void, any[], any, () 
   const [pets, setPets] = useState<any[]>([])
 
   return [(data: Record<string, string>) => {
-    axios.get(`${process.env.REACT_APP_API_URL}/api/feeds`, { params: data, withCredentials: true })
+    axios.get(`${process.env.REACT_APP_API_URL}/api/comments`, { params: data, withCredentials: true })
       .then(({ data }) => {
-        setPets(data.pets || [])
+        setPets(data.comments || [])
         setError(null)
       })
       .catch(error => {

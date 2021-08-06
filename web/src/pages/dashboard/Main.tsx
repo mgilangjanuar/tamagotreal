@@ -53,7 +53,7 @@ const Main: React.FC<Props> = ({ user }) => {
       <List dataSource={data}
         loading={error === undefined}
         loadMore={<div style={{ textAlign: 'center' }}>
-          <Button shape="round" disabled={!feeds?.length} onClick={() => setOffset(offset + size + 1)}>{feeds?.length ? 'Load More' : 'End of Page'}</Button>
+          <Button shape="round" disabled={!feeds?.length} onClick={() => setOffset(data?.length || 0)}>{feeds?.length ? 'Load More' : 'End of Page'}</Button>
         </div>}
         renderItem={feed => <List.Item key={feed.id}>
           <Link to={`/feed/${feed.id}`}>
@@ -66,7 +66,7 @@ const Main: React.FC<Props> = ({ user }) => {
                 avatar={<Avatar src={feed.pet.avatar_url} />}
                 description={moment(feed.created_at).fromNow()} />
               {feed.caption ? <div style={{ textOverflow: 'ellipsis', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
-                <Typography.Paragraph style={{ whiteSpace: 'pre-wrap', margin: '15px 0 0 0' }}>
+                <Typography.Paragraph style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap', margin: '15px 0 0 0' }}>
                   {feed.caption}
                 </Typography.Paragraph>
               </div> : ''}

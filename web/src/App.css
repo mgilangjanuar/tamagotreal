@@ -17,3 +17,7 @@
 .ant-card-meta-title {
   margin-bottom: 0 !important;
 }
+
+.ant-card-meta-description {
+  white-space: pre-wrap;
+}

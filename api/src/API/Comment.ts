@@ -1,9 +1,19 @@
 import { Request, Response } from 'express'
 import { Supabase } from '../Service/Supabase'
-import { Comment } from '../Types'
+import { Comment, Pet } from '../Types'
 
 export async function create(req: Request, res: Response): Promise<any> {
-  const comment = await Supabase.build().from<Comment>('comments').insert([req.body])
+  const { pet_id: petId } = req.body
+  if (!petId) {
+    throw { status: 400, body: { error: 'Pet ID is required' } }
+  }
+
+  const pet = await Supabase.build().from<Pet>('pets').select().match({ id: petId, owner: req.user.email })
+  if (!pet.data?.length) {
+    throw { status: 404, body: { error: 'Pet not found' } }
+  }
+
+  const comment = await Supabase.build().from<Comment>('comments').insert([{ ...req.body, owner: req.user.email }])
   if (comment.error) {
     throw { status: 400, body: { error: comment.error.message } }
   }
@@ -21,7 +31,7 @@ export async function find(req: Request, res: Response): Promise<any> {
 }
 
 export async function retrieve(req: Request, res: Response): Promise<any> {
-  const comment = await Supabase.build().from<Comment>('comments').select().eq('id', req.params.id)
+  const comment = await Supabase.build().from<Comment>('comments').select('*, pet:pet_id(*)').eq('id', req.params.id)
   if (comment.error) {
     throw { status: 400, body: { error: comment.error.message } }
   }
@@ -29,10 +39,18 @@ export async function retrieve(req: Request, res: Response): Promise<any> {
 }
 
 export async function update(req: Request, res: Response): Promise<any> {
+  const { pet_id: petId } = req.body
+  if (petId) {
+    const pet = await Supabase.build().from<Pet>('pets').select().match({ id: petId, owner: req.user.email })
+    if (!pet.data?.length) {
+      throw { status: 404, body: { error: 'Pet not found' } }
+    }
+  }
+
   const comment = await Supabase.build().from<Comment>('comments').update({
     ...req.body,
     owner: req.user.email
-  }).eq('id', req.params.id).eq('owner', req.user.email)
+  }).match({ id: req.params.id, owner: req.user.email })
   return res.send({ comment: comment.data[0] })
 }
 

@@ -5,7 +5,7 @@ export function useUpdate(): [(id: string, data: Record<string, any>) => void, a
   const [error, setError] = useState<any>(undefined)
 
   return [(id: string, data: Record<string, string>) => {
-    axios.patch(`${process.env.REACT_APP_API_URL}/api/feeds/${id}`, data, { withCredentials: true })
+    axios.patch(`${process.env.REACT_APP_API_URL}/api/comments/${id}`, data, { withCredentials: true })
       .then(() => setError(null))
       .catch(error => {
         setError(error.response || error)
