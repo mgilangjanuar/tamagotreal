@@ -33,8 +33,8 @@ export type Feed = {
 export type Comment = {
   id?: string,
   feed_id: string,
-  content: string,
   pet_id: string,
+  content: string,
   created_at: string,
   owner: string
 }

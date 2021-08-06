@@ -1,11 +1,12 @@
-import { CommentOutlined, HeartFilled, HeartOutlined } from '@ant-design/icons'
-import { Button, Card, Col, Layout, Row, Typography } from 'antd'
+import { CommentOutlined, DeleteOutlined, EditOutlined, HeartFilled, HeartOutlined } from '@ant-design/icons'
+import { Button, Card, Col, Layout, Popconfirm, Row, Space, Tooltip, Typography } from 'antd'
 import Avatar from 'antd/lib/avatar/avatar'
 import moment from 'moment'
 import React, { useEffect } from 'react'
 import { RouteComponentProps, useHistory } from 'react-router-dom'
 import Navbar from '../../components/Navbar'
 import Navigation from '../../components/Navigation'
+import { useDelete } from '../../hooks/feed/useDelete'
 import { useLike } from '../../hooks/feed/useLike'
 import { useRetrieve } from '../../hooks/feed/useRetrieve'
 import { useMe } from '../../hooks/useMe'
@@ -19,6 +20,7 @@ const Feed: React.FC<PageProps> = ({ match }) => {
   const [user] = useMe()
   const [retrieve, feed, error, reset] = useRetrieve()
   const [like, feedLike] = useLike()
+  const [remove, errorRemove] = useDelete()
 
   useEffect(() => {
     if (user === null) {
@@ -38,6 +40,12 @@ const Feed: React.FC<PageProps> = ({ match }) => {
     }
   }, [error])
 
+  useEffect(() => {
+    if (errorRemove === null) {
+      history.replace('/dashboard/main')
+    }
+  }, [errorRemove])
+
   return <>
     <Navbar />
     <Layout style={{ flexDirection: 'row' }}>
@@ -47,7 +55,16 @@ const Feed: React.FC<PageProps> = ({ match }) => {
             <Card hoverable cover={<img src={feed?.url} alt={feed?.url} />} actions={[
               <Button key="like" onClick={() => like(feed?.id)} type="text" danger icon={feed?.likes?.includes(user.email) ? <HeartFilled /> : <HeartOutlined />}> &nbsp;{feed?.likes?.length || 0}</Button>,
               <Button key="comment" type="text" icon={<CommentOutlined />}></Button>
-            ]}>
+            ]} extra={feed.owner === user?.email ? <Space>
+              <Tooltip title="Edit">
+                <Button icon={<EditOutlined />} type="text" shape="circle" />
+              </Tooltip>
+              <Tooltip title="Delete">
+                <Popconfirm title="Are you sure to delete this?" onConfirm={() => remove(feed?.id)}>
+                  <Button icon={<DeleteOutlined />} danger type="text" shape="circle" />
+                </Popconfirm>
+              </Tooltip>
+            </Space> : null}>
               <Card.Meta
                 title={feed?.pet?.name}
                 avatar={<Avatar src={feed?.pet?.avatar_url} />}

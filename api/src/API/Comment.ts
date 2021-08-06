@@ -11,7 +11,12 @@ export async function create(req: Request, res: Response): Promise<any> {
 }
 
 export async function find(req: Request, res: Response): Promise<any> {
-  const comments = await Supabase.build().from<Comment>('comments').select().match(req.query)
+  const { rangeFrom, rangeTo, ...query } = req.query
+  const comments = await Supabase.build().from<Comment>('comments')
+    .select('*, pet:pet_id(*)')
+    .match(query)
+    .range(Number(rangeFrom) || 0, Number(rangeTo) || 9)
+    .order('created_at', { ascending: false })
   return res.send({ comments: comments.data })
 }
 
