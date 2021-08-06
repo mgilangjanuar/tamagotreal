@@ -56,7 +56,7 @@ const Profile: React.FC<Props> = ({ user }) => {
             {fields.map((field, index) => <PetForm key={index} field={field} remove={remove} form={form} index={index} />)}
             <Form.Item wrapperCol={{ span: 24 }} style={{ marginTop: '5px' }}>
               <Button size="large" shape="round" type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                Add pet
+                Add Pet
               </Button>
             </Form.Item>
           </>}
