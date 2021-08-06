@@ -9,6 +9,7 @@ import Navbar from '../../components/Navbar'
 import Navigation from '../../components/Navigation'
 import { useCreate } from '../../hooks/comment/useCreate'
 import { useFind as useFindComments } from '../../hooks/comment/useFind'
+import { useRemove } from '../../hooks/comment/useRemove'
 import { useDelete } from '../../hooks/feed/useDelete'
 import { useLike } from '../../hooks/feed/useLike'
 import { useRetrieve } from '../../hooks/feed/useRetrieve'
@@ -35,6 +36,7 @@ const Feed: React.FC<PageProps> = ({ match }) => {
   const [createComment, comment, errorComment, resetComment] = useCreate()
   const [commentsData, setCommentsData] = useState<any[]>()
   const [findComments, comments, errorComments, resetComments] = useFindComments()
+  const [removeComment, commentRemoved, errorRemoveComment, resetRemoveComment] = useRemove()
 
   const commentSize = 1
 
@@ -130,6 +132,22 @@ const Feed: React.FC<PageProps> = ({ match }) => {
     createComment(formComment.getFieldsValue())
   }
 
+  useEffect(() => {
+    console.log('OASNAKSSA', errorRemoveComment, commentRemoved)
+    if (errorRemoveComment) {
+      message.error(errorComment?.data.error || 'Something error')
+    } else if (errorRemoveComment === null) {
+      message.success('Deleted')
+    }
+    resetRemoveComment()
+  }, [errorRemoveComment])
+
+  useEffect(() => {
+    if (commentRemoved) {
+      setCommentsData(commentsData?.filter(data => data.id !== commentRemoved.id))
+    }
+  }, [commentRemoved])
+
   return <>
     <Navbar />
     <Layout style={{ flexDirection: 'row' }}>
@@ -186,6 +204,11 @@ const Feed: React.FC<PageProps> = ({ match }) => {
               </div>}
               renderItem={comment => <List.Item key={comment?.id} style={{ padding: '0' }}>
                 <Card bordered={false} style={{ width: '100%' }}>
+                  {user?.email === comment.owner ? <div style={{ float: 'right' }}>
+                    <Popconfirm title="Are you sure to delete this?" onConfirm={() => removeComment(comment?.id)}>
+                      <Button icon={<DeleteOutlined />} danger type="text" shape="circle" />
+                    </Popconfirm>
+                  </div> : ''}
                   <Card.Meta
                     title={comment?.pet.name}
                     avatar={<Avatar src={comment?.pet.avatar_url} />}
