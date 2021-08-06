@@ -31,6 +31,7 @@ const Post: React.FC<Props> = ({ user }) => {
       message.success('Post!')
       reset()
       form.resetFields()
+      window.location.replace('/dashboard/main')
     }
   }, [error])
 
