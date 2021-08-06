@@ -1,6 +1,7 @@
 import { SendOutlined, UploadOutlined } from '@ant-design/icons'
 import { Button, Col, Form, Input, message, Row, Select, Typography, Upload } from 'antd'
 import ImgCrop from 'antd-img-crop'
+import Avatar from 'antd/lib/avatar/avatar'
 import { useForm } from 'antd/lib/form/Form'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
@@ -65,8 +66,8 @@ const Post: React.FC<Props> = ({ user }) => {
           </ImgCrop>
         </Form.Item>
         <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 24 }} label="Pet" name="pet_id" rules={[{ required: true, message: 'Please select the pet' }]}>
-          <Select>
-            {pets?.map(pet => <Select.Option value={pet.id}>{pet.name}</Select.Option>)}
+          <Select size="large">
+            {pets?.map(pet => <Select.Option value={pet.id}><Avatar src={pet.avatar_url} style={{ marginRight: '10px' }} /> {pet.name}</Select.Option>)}
           </Select>
         </Form.Item>
         <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 24 }} label="Caption" name="caption">

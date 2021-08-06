@@ -144,7 +144,7 @@ const PetForm: React.FC<PetFormProps> = ({ field, remove: removeField, form, ind
   }
 
   return <Layout.Content style={{ padding: '5px 0' }}>
-    <Card style={{ cursor: 'pointer' }} onClick={() => setShowDrawer(true)}>
+    <Card hoverable onClick={() => setShowDrawer(true)}>
       <Row gutter={16}>
         <Col span={8} md={5} sm={6}>
           <Typography.Paragraph style={{ textAlign: 'center', marginBottom: 0 }}>

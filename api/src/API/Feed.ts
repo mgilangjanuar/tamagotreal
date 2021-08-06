@@ -23,7 +23,7 @@ export async function create(req: Request, res: Response): Promise<any> {
 }
 
 export async function find(req: Request, res: Response): Promise<any> {
-  const feeds = await Supabase.build().from<Feed>('feeds').select('*, pet:pet_id(*)').match(req.query)
+  const feeds = await Supabase.build().from<Feed>('feeds').select('*, pet:pet_id(*)').match(req.query).order('created_at', { ascending: false })
   return res.send({ feeds: feeds.data })
 }
 
@@ -64,9 +64,11 @@ export async function like(req: Request, res: Response): Promise<any> {
   if (!feed.data?.length) {
     throw { status: 404, body: { error: 'Feed not found' } }
   }
-  feed = await Supabase.build().from<Feed>('feeds')
-    .update({ likes: [...feed.data[0].likes || [], req.user.email] })
-    .match({ id: req.params.id, owner: req.user.email })
+  if (!feed.data[0].likes?.includes(req.user.email)) {
+    feed = await Supabase.build().from<Feed>('feeds')
+      .update({ likes: [...feed.data[0].likes || [], req.user.email] })
+      .match({ id: req.params.id, owner: req.user.email })
+  }
   if (feed.error) {
     throw { status: 400, body: { error: feed.error.message } }
   }

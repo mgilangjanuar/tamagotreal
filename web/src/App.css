@@ -13,3 +13,7 @@
   width: 100% !important;
   max-width: 480px;
 }
+
+.ant-card-meta-title {
+  margin-bottom: 0 !important;
+}

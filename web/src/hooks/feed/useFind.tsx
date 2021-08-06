@@ -1,18 +1,18 @@
 import axios from 'axios'
 import { useState } from 'react'
 
-export function useFind(): [(data: Record<string, any>) => void, any[], any, () => void] {
+export function useFind(): [(data?: Record<string, any>) => void, any[], any, () => void] {
   const [error, setError] = useState<any>(undefined)
-  const [pets, setPets] = useState<any[]>([])
+  const [feeds, setFeeds] = useState<any[]>([])
 
-  return [(data: Record<string, string>) => {
+  return [(data?: Record<string, string>) => {
     axios.get(`${process.env.REACT_APP_API_URL}/api/feeds`, { params: data, withCredentials: true })
       .then(({ data }) => {
-        setPets(data.pets || [])
+        setFeeds(data.feeds || [])
         setError(null)
       })
       .catch(error => {
         setError(error.response || error)
       })
-  }, pets, error, () => setError(undefined)]
+  }, feeds, error, () => setError(undefined)]
 }

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useState } from 'react'
 
-export function useUpdate(): [(id: string) => void, any, () => void] {
+export function useLike(): [(id: string) => void, any, () => void] {
   const [error, setError] = useState<any>(undefined)
 
   return [(id: string) => {
