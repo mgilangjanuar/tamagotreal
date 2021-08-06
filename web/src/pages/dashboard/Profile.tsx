@@ -7,6 +7,7 @@ import JSCookie from 'js-cookie'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import Navigation from '../../components/Navigation'
 import { useCreate } from '../../hooks/pet/useCreate'
 import { useFind } from '../../hooks/pet/useFind'
 import { useRemove } from '../../hooks/pet/useRemove'
@@ -61,6 +62,7 @@ const Profile: React.FC<Props> = ({ user }) => {
         </Form.List>
       </Form>
     </Col>
+    <Navigation page="profile" />
   </Row>
 }
 

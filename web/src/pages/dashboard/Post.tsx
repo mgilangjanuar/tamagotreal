@@ -3,6 +3,8 @@ import { Button, Col, Form, Input, message, Row, Select, Typography, Upload } fr
 import ImgCrop from 'antd-img-crop'
 import { useForm } from 'antd/lib/form/Form'
 import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import Navigation from '../../components/Navigation'
 import { useCreate } from '../../hooks/feed/useCreate'
 import { useFind } from '../../hooks/pet/useFind'
 
@@ -15,6 +17,7 @@ const Post: React.FC<Props> = ({ user }) => {
   const [img, setImg] = useState<any>()
   const [findPets, pets] = useFind()
   const [create, error, reset] = useCreate()
+  const history = useHistory()
 
   useEffect(() => {
     findPets({ owner: user?.email })
@@ -31,7 +34,7 @@ const Post: React.FC<Props> = ({ user }) => {
       message.success('Post!')
       reset()
       form.resetFields()
-      window.location.replace('/dashboard/main')
+      history.push('/dashboard/main')
     }
   }, [error])
 
@@ -80,6 +83,7 @@ const Post: React.FC<Props> = ({ user }) => {
         </Form.Item>
       </Form>
     </Col>
+    <Navigation page="post" />
   </Row>
 }
 export default Post

@@ -1,5 +1,5 @@
 import { Layout } from 'antd'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RouteComponentProps, useHistory } from 'react-router-dom'
 import Navbar from '../../components/Navbar'
 import Navigation from '../../components/Navigation'
@@ -25,7 +25,6 @@ const Dashboard: React.FC<PageProps> = ({ match }) => {
   return <>
     <Navbar />
     <Layout style={{ flexDirection: 'row' }}>
-      <Navigation page={match.params.page} />
       <Layout.Content style={{ padding: '10px 24px 24px', margin: 0, minHeight: 280 }}>
         {match.params.page === 'main' ? <Main user={user} /> : ''}
         {match.params.page === 'post' ? <Post user={user} /> : ''}
