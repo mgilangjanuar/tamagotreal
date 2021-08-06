@@ -69,7 +69,7 @@ const Profile: React.FC<Props> = ({ user }) => {
 
 const PetForm: React.FC<PetFormProps> = ({ field, remove: removeField, form, index }) => {
   const [showDrawer, setShowDrawer] = useState<boolean>(!form.getFieldValue('pets')?.[index]?.name)
-  const [save, errorCreate, resetCreate] = useCreate()
+  const [save, pet, errorCreate, resetCreate] = useCreate()
   const [remove, errorRemove, resetRemove] = useRemove()
   const [update, errorUpdate, resetUpdate] = useUpdate()
   const [img, setImg] = useState<any>()
@@ -84,6 +84,14 @@ const PetForm: React.FC<PetFormProps> = ({ field, remove: removeField, form, ind
       })
     }
   }, [form])
+
+  useEffect(() => {
+    if (pet) {
+      form.setFieldsValue({
+        pets: form.getFieldValue('pets')?.map((data: any, i: number) => i === index ? pet : data)
+      })
+    }
+  }, [pet])
 
   useEffect(() => {
     if (errorCreate) {
