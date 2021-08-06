@@ -11,6 +11,8 @@ Tamagotchi for your real pets. *For kids nowadays*: this is Instagram for your p
 
 Tamagotreal is live at [tamagotreal.vercel.app](https://tamagotreal.vercel.app)!
 
+This is the open source project of pet social media to expose your cute pet and will be the eyebleach for others. Tamagotreal uses [Supabase](https://supabase.io) to authentication providers such as Google, Twitter, and GitHub.
+
 ## Getting Started
 
 #### `yarn install`
@@ -51,8 +53,12 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
  0. Send an issue
  0. Or, fork and send us a pull request to the `main` branch
 
+## Maintainers
+
+ - mgilangjanuar ([github](https://github.com/mgilangjanuar), [twitter](https://twitter.com/mgilangjanuar))
+
 ## License
 
 [MIT](./LICENSE.md)
 
-![high-five](https://media0.giphy.com/media/26BREWfA5cRZJbMd2/giphy.gif?cid=ecf05e4721370e49dc41cdc59e140f4c0337fcaa46553ddb&rid=giphy.gif)
+![high-five](https://media1.giphy.com/media/XZMh13cILjZfhWeEbr/giphy.gif?cid=ecf05e47seb8mxwf85bom4zuq2akc6t5kmjil31qhykhno75&rid=giphy.gif&ct=g)

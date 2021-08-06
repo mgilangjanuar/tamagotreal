@@ -1,5 +1,5 @@
-import { GoogleOutlined, TwitterOutlined } from '@ant-design/icons'
-import { Button, Modal, Tooltip, Typography } from 'antd'
+import { GithubOutlined, GoogleOutlined, TwitterOutlined } from '@ant-design/icons'
+import { Button, Modal, Typography } from 'antd'
 import JSCookie from 'js-cookie'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
@@ -35,9 +35,10 @@ export function useLogin(): [() => void, React.FC, any] {
         <Button onClick={() => login('google')} type="default" block icon={<GoogleOutlined />}>Sign in with Google</Button>
       </Typography.Paragraph>
       <Typography.Paragraph style={{ textAlign: 'center' }}>
-        <Tooltip title="Coming soon">
-          <Button disabled onClick={() => login('twitter')} type="primary" block icon={<TwitterOutlined />}>Sign in with Twitter</Button>
-        </Tooltip>
+        <Button onClick={() => login('twitter')} type="primary" block icon={<TwitterOutlined />}>Sign in with Twitter</Button>
+      </Typography.Paragraph>
+      <Typography.Paragraph style={{ textAlign: 'center' }}>
+        <Button onClick={() => login('github')} style={{ background: '#000', color: '#fff' }} block icon={<GithubOutlined />}>Sign in with GitHub</Button>
       </Typography.Paragraph>
     </Modal>
   }, user]
