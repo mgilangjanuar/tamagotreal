@@ -11,7 +11,11 @@ Tamagotchi for your real pets. *For kids nowadays*: this is Instagram for your p
 
 Tamagotreal is live at [tamagotreal.vercel.app](https://tamagotreal.vercel.app)!
 
-This is the open source project of pet social media to expose your cute pet and will be the eyebleach for others. Tamagotreal uses [Supabase](https://supabase.io) to authentication providers such as Google, Twitter, and GitHub.
+This is the open source project of pet social media to expose your cute pet and will be the eyebleach for others. Tamagotreal uses [Supabase](https://supabase.io) to:
+
+ - authenticate user for sign in with 3rd party apps such as Google, Twitter, and GitHub
+ - storing data of pets info, feeds, and comments
+ - storage to upload the pet's photo
 
 ## Getting Started
 
