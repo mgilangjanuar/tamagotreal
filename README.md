@@ -12,10 +12,10 @@ Tamagotchi for your real pets. *For kids nowadays*: this is Instagram for your p
 Tamagotreal is live at [tamagotreal.vercel.app](https://tamagotreal.vercel.app)!
 
 <p>
-  <img style="width: 23%; margin-right: 10px;" src="./web/public/photo_2021-08-06&#32;23.56.11.jpeg" />
-  <img style="width: 23%; margin-right: 10px;" src="./web/public/photo_2021-08-06&#32;23.56.30.jpeg" />
-  <img style="width: 23%; margin-right: 10px;" src="./web/public/photo_2021-08-06&#32;23.56.37.jpeg" />
-  <img style="width: 23%; margin-right: 10px;" src="./web/public/photo_2021-08-06&#32;23.56.24.jpeg" />
+  <img width="200" src="./web/public/photo_2021-08-06&#32;23.56.11.jpeg" />
+  <img width="200" src="./web/public/photo_2021-08-06&#32;23.56.30.jpeg" />
+  <img width="200" src="./web/public/photo_2021-08-06&#32;23.56.37.jpeg" />
+  <img width="200" src="./web/public/photo_2021-08-06&#32;23.56.24.jpeg" />
 </p>
 
 This is the open source project of pet social media to expose your cute pet and will be the eyebleach for others. Tamagotreal uses [Supabase](https://supabase.io) to:
@@ -24,7 +24,7 @@ This is the open source project of pet social media to expose your cute pet and 
  - storing data of pets info, feeds, and comments
  - storage to upload the pet's photo
 
-## Upcoming Feature
+## Upcoming Features
 
 - [x] profile
 - [x] feeds
