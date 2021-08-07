@@ -1,5 +1,5 @@
 import { CommentOutlined, DeleteOutlined, EditOutlined, HeartFilled, HeartOutlined, SendOutlined } from '@ant-design/icons'
-import { Button, Card, Col, Drawer, Form, Input, Layout, List, message, Popconfirm, Row, Select, Space, Spin, Tooltip, Typography } from 'antd'
+import { Button, Card, Col, Drawer, Form, Input, Layout, List, message, Popconfirm, Row, Select, Space, Tooltip, Typography } from 'antd'
 import Avatar from 'antd/lib/avatar/avatar'
 import { useForm } from 'antd/lib/form/Form'
 import moment from 'moment'
@@ -146,9 +146,9 @@ const Feed: React.FC<PageProps> = ({ match }) => {
         <Row style={{ minHeight: '85vh', padding: '0 0 70px' }}>
           <Col lg={{ span: 10, offset: 7 }} md={{ span: 16, offset: 4 }} sm={{ span: 20, offset: 2 }} span={24}>
             <Card hoverable cover={<img src={feed?.url} alt={feed?.url} />} actions={[
-              <Button disabled={loadingLike === feed.id} key="like"
+              <Button loading={loadingLike === feed.id} key="like"
                 onClick={() => like(feed?.id)} type="text" danger
-                icon={loadingLike === feed.id ? <Spin /> : feed?.likes?.includes(user?.email) ? <HeartFilled /> : <HeartOutlined />}>
+                icon={feed?.likes?.includes(user?.email) ? <HeartFilled /> : <HeartOutlined />}>
                 &nbsp; {feed?.likes?.length || 0}
               </Button>,
               <Button key="comment" type="text" icon={<CommentOutlined />}></Button>
@@ -173,6 +173,7 @@ const Feed: React.FC<PageProps> = ({ match }) => {
               </div> : ''}
             </Card>
 
+            <br />
             <Card title={`Comments (${commentsData?.length}${!comments?.length || comments?.length <= commentSize ? '' : '+'})`}>
               <Form layout="horizontal" form={formComment} onFinish={finishComment}>
                 <Form.Item label="Comment as" wrapperCol={{ span: 18 }} labelCol={{ span: 6 }} name="pet_id" rules={[{ required: true, message: 'Please select the pet' }]}>
@@ -187,7 +188,7 @@ const Feed: React.FC<PageProps> = ({ match }) => {
                   <Input />
                 </Form.Item>
                 <Form.Item style={{ float: 'right' }}>
-                  <Button disabled={loadingComment} shape="round" htmlType="submit">{loadingComment ? <Spin /> : <>Comment <SendOutlined /></>}</Button>
+                  <Button loading={loadingComment} shape="round" htmlType="submit">Comment <SendOutlined /></Button>
                 </Form.Item>
               </Form>
             </Card>
@@ -205,7 +206,7 @@ const Feed: React.FC<PageProps> = ({ match }) => {
                 <Card bordered={false} style={{ width: '100%' }}>
                   {user?.email === comment.owner ? <div style={{ float: 'right' }}>
                     <Popconfirm disabled={loadingRemoveComment === comment.id} title="Are you sure to delete this?" onConfirm={() => removeComment(comment?.id)}>
-                      {loadingRemoveComment === comment.id ? <Spin /> : <Button icon={<DeleteOutlined />} danger type="text" shape="circle" />}
+                      <Button loading={loadingRemoveComment === comment.id} icon={<DeleteOutlined />} danger type="text" shape="circle" />
                     </Popconfirm>
                   </div> : ''}
                   <Card.Meta

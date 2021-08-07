@@ -17,7 +17,7 @@ const Post: React.FC<Props> = ({ user }) => {
   const [form] = useForm()
   const [img, setImg] = useState<any>()
   const [findPets, pets] = useFind()
-  const [create, error, reset] = useCreate()
+  const [create, loading, error, reset] = useCreate()
   const history = useHistory()
 
   useEffect(() => {
@@ -80,7 +80,9 @@ const Post: React.FC<Props> = ({ user }) => {
           <Input type="hidden" />
         </Form.Item>
         <Form.Item style={{ textAlign: 'right' }}>
-          <Button size="large" shape="round" type="primary" htmlType="submit">Post <SendOutlined /></Button>
+          <Button size="large" shape="round" type="primary" htmlType="submit" loading={loading}>
+            Post <SendOutlined />
+          </Button>
         </Form.Item>
       </Form>
     </Col>
