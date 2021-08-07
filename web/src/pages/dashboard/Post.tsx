@@ -1,5 +1,5 @@
 import { SendOutlined, UploadOutlined } from '@ant-design/icons'
-import { Button, Col, Form, Input, message, Row, Select, Typography, Upload } from 'antd'
+import { Button, Col, Form, Input, message, Row, Select, Upload } from 'antd'
 import ImgCrop from 'antd-img-crop'
 import Avatar from 'antd/lib/avatar/avatar'
 import { useForm } from 'antd/lib/form/Form'

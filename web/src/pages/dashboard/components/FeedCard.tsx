@@ -50,10 +50,11 @@ interface Props {
   user: any,
   pets?: any[],
   onAfterUpdate?: (feedLike: any) => void,
+  onClickComment?: () => void,
   useExtra?: boolean
 }
 
-export const FeedCard: React.FC<Props> = ({ feed, user, pets, onAfterUpdate, useExtra }) => {
+export const FeedCard: React.FC<Props> = ({ feed, user, pets, onAfterUpdate, onClickComment, useExtra }) => {
   const [like, loadingLike, feedLike, errorLike, resetLike] = useLike()
   const [remove, loadingRemove, errorRemove] = useRemove()
   const [update, loadingUpdate, feedUpdate, errorUpdate, resetUpdate] = useUpdate()
@@ -112,7 +113,7 @@ export const FeedCard: React.FC<Props> = ({ feed, user, pets, onAfterUpdate, use
         icon={feed?.likes?.includes(user?.email) ? <HeartFilled /> : <HeartOutlined />}>
         &nbsp; {feed?.likes?.length || 0}
       </Button>,
-      <Button block key="comment" type="text" icon={<CommentOutlined />}></Button>,
+      <Button onClick={() => onClickComment?.()} block key="comment" type="text" icon={<CommentOutlined />}></Button>,
       <Popover title="Share to" trigger="click" placement="bottomRight" content={<div>
         <TwitterShareButton {...shareProps}>
           <TwitterIcon round size={32} />

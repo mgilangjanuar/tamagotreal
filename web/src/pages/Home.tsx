@@ -26,7 +26,7 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     if (user) {
-      history.push('/dashboard')
+      history.push('/dashboard/main')
     }
   }, [user])
 
@@ -43,7 +43,7 @@ const Home: React.FC = () => {
             <Typography.Paragraph style={{ textAlign: 'center' }}>
               <Typography.Text type="secondary">Tamagotchi for your real pets 🐹 🐱 🐶</Typography.Text>
             </Typography.Paragraph>
-            <Divider>Sign In</Divider>
+            <Divider>Login</Divider>
             <LoginComponent />
           </div>
         </Col>

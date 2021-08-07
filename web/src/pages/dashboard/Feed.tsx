@@ -118,7 +118,9 @@ const Feed: React.FC<PageProps> = ({ match }) => {
       <Layout.Content style={{ padding: '10px 10px 24px', margin: 0, minHeight: 280 }}>
         <Row style={{ minHeight: '85vh', padding: '0 0 70px' }}>
           <Col lg={{ span: 10, offset: 7 }} md={{ span: 16, offset: 4 }} sm={{ span: 20, offset: 2 }} span={24}>
-            <FeedCard feed={feed} user={user} pets={pets} onAfterUpdate={newFeed => setFeed({ ...newFeed, pet: feed.pet })} useExtra />
+            <FeedCard feed={feed} user={user} pets={pets}
+              onAfterUpdate={newFeed => setFeed({ ...newFeed, pet: feed.pet })}
+              onClickComment={() => window.scrollTo(0,document.body.scrollHeight)} useExtra />
 
             <br />
             <Card title={`Comments (${commentsData?.length}${!comments?.length || comments?.length <= commentSize ? '' : '+'})`}>
