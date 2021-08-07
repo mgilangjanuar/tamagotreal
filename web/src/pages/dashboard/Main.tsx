@@ -1,5 +1,5 @@
 import { CommentOutlined, HeartFilled, HeartOutlined } from '@ant-design/icons'
-import { Avatar, Button, Card, Col, List, Row, Typography } from 'antd'
+import { Avatar, Button, Card, Col, List, Row, Spin, Typography } from 'antd'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -15,7 +15,7 @@ const Main: React.FC<Props> = ({ user }) => {
   const [data, setData] = useState<any[]>()
   const [offset, setOffset] = useState<number>(0)
   const [find, feeds, error, reset] = useFind()
-  const [like, feed, errorLike, resetLike] = useLike()
+  const [like, loadingLike, feed, errorLike, resetLike] = useLike()
 
   const size = 8
 
@@ -62,7 +62,11 @@ const Main: React.FC<Props> = ({ user }) => {
         renderItem={feed => <List.Item key={feed.id}>
           <Link style={{ width: '100%' }} to={`/feed/${feed.id}`}>
             <Card hoverable cover={<img src={feed.url} alt={feed.url} />} actions={[
-              <Button key="like" onClick={e => likeFeed(e, feed.id)} type="text" danger icon={feed.likes?.includes(user.email) ? <HeartFilled /> : <HeartOutlined />}> &nbsp;{feed.likes?.length || 0}</Button>,
+              <Button disabled={loadingLike} key="like"
+                onClick={e => likeFeed(e, feed.id)} type="text" danger
+                icon={loadingLike ? <Spin /> : feed.likes?.includes(user.email) ? <HeartFilled /> : <HeartOutlined />}>
+                &nbsp; {feed.likes?.length || 0}
+              </Button>,
               <Button key="comment" type="text" icon={<CommentOutlined />}></Button>
             ]}>
               <Card.Meta

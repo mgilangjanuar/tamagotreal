@@ -1,5 +1,5 @@
 import { CommentOutlined, DeleteOutlined, EditOutlined, HeartFilled, HeartOutlined, SendOutlined } from '@ant-design/icons'
-import { Button, Card, Col, Drawer, Form, Input, Layout, List, message, Popconfirm, Row, Select, Space, Tooltip, Typography } from 'antd'
+import { Button, Card, Col, Drawer, Form, Input, Layout, List, message, Popconfirm, Row, Select, Space, Spin, Tooltip, Typography } from 'antd'
 import Avatar from 'antd/lib/avatar/avatar'
 import { useForm } from 'antd/lib/form/Form'
 import moment from 'moment'
@@ -28,7 +28,7 @@ const Feed: React.FC<PageProps> = ({ match }) => {
   const [user] = useMe()
   const [retrieve, feed, error, reset] = useRetrieve()
   const [update, errorUpdate, resetUpdate] = useUpdate()
-  const [like, feedLike] = useLike()
+  const [like, loadingLike, feedLike] = useLike()
   const [remove, errorRemove] = useDelete()
   const [form] = useForm()
   const [formComment] = useForm()
@@ -155,7 +155,11 @@ const Feed: React.FC<PageProps> = ({ match }) => {
         <Row style={{ minHeight: '85vh', padding: '0 0 70px' }}>
           <Col lg={{ span: 10, offset: 7 }} md={{ span: 16, offset: 4 }} sm={{ span: 20, offset: 2 }} span={24}>
             <Card hoverable cover={<img src={feed?.url} alt={feed?.url} />} actions={[
-              <Button key="like" onClick={() => like(feed?.id)} type="text" danger icon={feed?.likes?.includes(user?.email) ? <HeartFilled /> : <HeartOutlined />}> &nbsp;{feed?.likes?.length || 0}</Button>,
+              <Button disabled={loadingLike} key="like"
+                onClick={() => like(feed?.id)} type="text" danger
+                icon={loadingLike ? <Spin /> : feed?.likes?.includes(user?.email) ? <HeartFilled /> : <HeartOutlined />}>
+                &nbsp; {feed?.likes?.length || 0}
+              </Button>,
               <Button key="comment" type="text" icon={<CommentOutlined />}></Button>
             ]} extra={feed.owner === user?.email ? <Space>
               <Tooltip title="Edit">
