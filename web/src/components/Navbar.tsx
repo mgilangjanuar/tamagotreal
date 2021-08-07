@@ -1,10 +1,19 @@
+import { LeftOutlined } from '@ant-design/icons'
 import { Layout } from 'antd'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
-const Navbar: React.FC = () => {
+interface Props {
+  back?: boolean
+}
+
+const Navbar: React.FC<Props> = ({ back }) => {
+  const history = useHistory()
+
   return <Layout.Header>
-    <Link to="/dashboard"><div className="logo">🐹 Tamagotreal</div></Link>
+    <a onClick={() => back ? history.goBack() : history.push('/dashboard')} className="logo">
+      {back ? <><LeftOutlined /> Back</> : '🐹 Tamagotreal'}
+    </a>
   </Layout.Header>
 }
 

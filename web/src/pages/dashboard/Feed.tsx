@@ -140,18 +140,18 @@ const Feed: React.FC<PageProps> = ({ match }) => {
   }, [commentRemoved])
 
   return <>
-    <Navbar />
+    <Navbar back />
     <Layout style={{ flexDirection: 'row' }}>
       <Layout.Content style={{ padding: '10px 10px 24px', margin: 0, minHeight: 280 }}>
         <Row style={{ minHeight: '85vh', padding: '0 0 70px' }}>
           <Col lg={{ span: 10, offset: 7 }} md={{ span: 16, offset: 4 }} sm={{ span: 20, offset: 2 }} span={24}>
             <Card loading={!feed} hoverable cover={<img src={feed?.url} alt={feed?.url} />} actions={[
-              <Button loading={loadingLike === feed.id} key="like"
+              <Button block loading={loadingLike === feed.id} key="like"
                 onClick={() => like(feed?.id)} type="text" danger
                 icon={feed?.likes?.includes(user?.email) ? <HeartFilled /> : <HeartOutlined />}>
                 &nbsp; {feed?.likes?.length || 0}
               </Button>,
-              <Button key="comment" type="text" icon={<CommentOutlined />}></Button>
+              <Button block key="comment" type="text" icon={<CommentOutlined />}></Button>
             ]} extra={feed.owner === user?.email ? <Space>
               <Tooltip title="Edit">
                 <Button onClick={() => setShowDrawer(true)} icon={<EditOutlined />} type="text" shape="circle" />

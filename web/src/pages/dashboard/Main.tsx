@@ -1,8 +1,9 @@
-import { CommentOutlined, HeartFilled, HeartOutlined } from '@ant-design/icons'
-import { Avatar, Button, Card, Col, List, Row, Typography } from 'antd'
+import { CommentOutlined, HeartFilled, HeartOutlined, ShareAltOutlined } from '@ant-design/icons'
+import { Avatar, Button, Card, Col, List, Popover, Row, Typography } from 'antd'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { LineIcon, LineShareButton, LinkedinIcon, LinkedinShareButton, PinterestIcon, PinterestShareButton, RedditIcon, RedditShareButton, TelegramIcon, TelegramShareButton, TwitterIcon, TwitterShareButton, WhatsappIcon, WhatsappShareButton } from 'react-share'
 import Navigation from '../../components/Navigation'
 import { useFind } from '../../hooks/feed/useFind'
 import { useLike } from '../../hooks/feed/useLike'
@@ -44,6 +45,15 @@ const Main: React.FC<Props> = ({ user }) => {
     like(id)
   }
 
+  const shareProps = (feed: any) => ({
+    title: feed.caption || 'Hey, check this out! So adorable ♥️',
+    description: feed.caption || 'Hey, check this out! So adorable ♥️',
+    url: `${process.env.REACT_APP_API_URL}/feed/${feed.id}`,
+    style: {
+      margin: '0 4px'
+    }
+  })
+
   return <Row style={{ minHeight: '85vh', padding: '0 0 70px' }}>
     <Col lg={{ span: 8, offset: 8 }} md={{ span: 16, offset: 4 }} sm={{ span: 20, offset: 2 }} span={24}>
       <List dataSource={data}
@@ -58,12 +68,37 @@ const Main: React.FC<Props> = ({ user }) => {
         renderItem={feed => <List.Item key={feed.id}>
           <Link style={{ width: '100%' }} to={`/feed/${feed.id}`}>
             <Card hoverable cover={<img src={feed.url} alt={feed.url} />} actions={[
-              <Button loading={loadingLike === feed.id} key="like"
+              <Button block loading={loadingLike === feed.id} key="like"
                 onClick={e => likeFeed(e, feed.id)} type="text" danger
                 icon={feed.likes?.includes(user.email) ? <HeartFilled /> : <HeartOutlined />}>
                 &nbsp; {feed.likes?.length || 0}
               </Button>,
-              <Button key="comment" type="text" icon={<CommentOutlined />}></Button>
+              <Button block key="comment" type="text" icon={<CommentOutlined />}></Button>,
+              <Popover title="Share to" trigger="click" placement="bottomRight" content={<div>
+                <TwitterShareButton {...shareProps(feed)}>
+                  <TwitterIcon round size={32} />
+                </TwitterShareButton>
+                <WhatsappShareButton {...shareProps(feed)}>
+                  <WhatsappIcon round size={32} />
+                </WhatsappShareButton>
+                <LineShareButton {...shareProps(feed)}>
+                  <LineIcon round size={32} />
+                </LineShareButton>
+                <TelegramShareButton {...shareProps(feed)}>
+                  <TelegramIcon round size={32} />
+                </TelegramShareButton>
+                <PinterestShareButton {...shareProps(feed)} media={feed.url}>
+                  <PinterestIcon round size={32} />
+                </PinterestShareButton>
+                <RedditShareButton {...shareProps(feed)}>
+                  <RedditIcon round size={32} />
+                </RedditShareButton>
+                <LinkedinShareButton {...shareProps(feed)}>
+                  <LinkedinIcon round size={32} />
+                </LinkedinShareButton>
+              </div>}>
+                <Button block key="share" type="text" icon={<ShareAltOutlined />}></Button>
+              </Popover>
             ]}>
               <Card.Meta
                 title={feed.pet.name}

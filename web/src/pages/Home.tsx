@@ -32,7 +32,7 @@ const Home: React.FC = () => {
 
   return <div>
     <Navbar />
-    <Layout.Content style={{ minHeight: '76vh', marginTop: '40px' }}>
+    <Layout.Content style={{ marginTop: '40px' }}>
       <Row>
         <Col lg={{ span: 10, offset: 7 }} md={{ span: 16, offset: 4 }} sm={{ span: 20, offset: 2 }} span={24}>
           <Typography.Paragraph style={{ textAlign: 'center' }}>
