@@ -33,10 +33,10 @@ const Feed: React.FC<PageProps> = ({ match }) => {
   const [form] = useForm()
   const [formComment] = useForm()
   const [findPets, pets] = useFind()
-  const [createComment, comment, errorComment, resetComment] = useCreate()
+  const [createComment, loadingComment, comment, errorComment, resetComment] = useCreate()
   const [commentsData, setCommentsData] = useState<any[]>()
   const [findComments, comments, errorComments, resetComments] = useFindComments()
-  const [removeComment, commentRemoved, errorRemoveComment, resetRemoveComment] = useRemove()
+  const [removeComment, loadingRemoveComment, commentRemoved, errorRemoveComment, resetRemoveComment] = useRemove()
 
   const commentSize = 8
 
@@ -53,9 +53,7 @@ const Feed: React.FC<PageProps> = ({ match }) => {
     }
   }, [feedLike])
 
-  useEffect(() => {
-    form.setFieldsValue(feed)
-  }, [feed])
+  useEffect(() => form.setFieldsValue(feed), [feed])
 
   useEffect(() => {
     if (feed) {
@@ -86,10 +84,6 @@ const Feed: React.FC<PageProps> = ({ match }) => {
     }
     resetUpdate()
   }, [errorUpdate])
-
-  const finish = () => {
-    update(feed.id, form.getFieldsValue())
-  }
 
   useEffect(() => {
     if (errorComments === undefined) {
@@ -123,9 +117,7 @@ const Feed: React.FC<PageProps> = ({ match }) => {
     }
   }, [comment])
 
-  useEffect(() => {
-    resetComments()
-  }, [offset])
+  useEffect(() => resetComments(), [offset])
 
   const finishComment = () => {
     localStorage.setItem('defaultPetId', formComment.getFieldValue('pet_id'))
@@ -133,7 +125,6 @@ const Feed: React.FC<PageProps> = ({ match }) => {
   }
 
   useEffect(() => {
-    console.log('OASNAKSSA', errorRemoveComment, commentRemoved)
     if (errorRemoveComment) {
       message.error(errorComment?.data.error || 'Something error')
     } else if (errorRemoveComment === null) {
@@ -155,9 +146,9 @@ const Feed: React.FC<PageProps> = ({ match }) => {
         <Row style={{ minHeight: '85vh', padding: '0 0 70px' }}>
           <Col lg={{ span: 10, offset: 7 }} md={{ span: 16, offset: 4 }} sm={{ span: 20, offset: 2 }} span={24}>
             <Card hoverable cover={<img src={feed?.url} alt={feed?.url} />} actions={[
-              <Button disabled={loadingLike} key="like"
+              <Button disabled={loadingLike === feed.id} key="like"
                 onClick={() => like(feed?.id)} type="text" danger
-                icon={loadingLike ? <Spin /> : feed?.likes?.includes(user?.email) ? <HeartFilled /> : <HeartOutlined />}>
+                icon={loadingLike === feed.id ? <Spin /> : feed?.likes?.includes(user?.email) ? <HeartFilled /> : <HeartOutlined />}>
                 &nbsp; {feed?.likes?.length || 0}
               </Button>,
               <Button key="comment" type="text" icon={<CommentOutlined />}></Button>
@@ -182,7 +173,7 @@ const Feed: React.FC<PageProps> = ({ match }) => {
               </div> : ''}
             </Card>
 
-            <Card title={`Comments (${commentsData?.length}${(commentsData?.length || 0) > 0 ? '+' : ''})`}>
+            <Card title={`Comments (${commentsData?.length}${!comments?.length || comments?.length <= commentSize ? '' : '+'})`}>
               <Form layout="horizontal" form={formComment} onFinish={finishComment}>
                 <Form.Item label="Comment as" wrapperCol={{ span: 18 }} labelCol={{ span: 6 }} name="pet_id" rules={[{ required: true, message: 'Please select the pet' }]}>
                   <Select>
@@ -196,7 +187,7 @@ const Feed: React.FC<PageProps> = ({ match }) => {
                   <Input />
                 </Form.Item>
                 <Form.Item style={{ float: 'right' }}>
-                  <Button shape="round" htmlType="submit">Comment <SendOutlined /></Button>
+                  <Button disabled={loadingComment} shape="round" htmlType="submit">{loadingComment ? <Spin /> : <>Comment <SendOutlined /></>}</Button>
                 </Form.Item>
               </Form>
             </Card>
@@ -213,8 +204,8 @@ const Feed: React.FC<PageProps> = ({ match }) => {
               renderItem={comment => <List.Item key={comment?.id} style={{ padding: '0' }}>
                 <Card bordered={false} style={{ width: '100%' }}>
                   {user?.email === comment.owner ? <div style={{ float: 'right' }}>
-                    <Popconfirm title="Are you sure to delete this?" onConfirm={() => removeComment(comment?.id)}>
-                      <Button icon={<DeleteOutlined />} danger type="text" shape="circle" />
+                    <Popconfirm disabled={loadingRemoveComment === comment.id} title="Are you sure to delete this?" onConfirm={() => removeComment(comment?.id)}>
+                      {loadingRemoveComment === comment.id ? <Spin /> : <Button icon={<DeleteOutlined />} danger type="text" shape="circle" />}
                     </Popconfirm>
                   </div> : ''}
                   <Card.Meta
@@ -234,7 +225,7 @@ const Feed: React.FC<PageProps> = ({ match }) => {
     </Layout>
 
     <Drawer title="Update" closable placement="right" visible={showDrawer} onClose={() => setShowDrawer(false)}>
-      <Form layout="vertical" form={form} onFinish={finish}>
+      <Form layout="vertical" form={form} onFinish={() => update(feed.id, form.getFieldsValue())}>
         <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 24 }} label="Pet" name="pet_id" rules={[{ required: true, message: 'Please select the pet' }]}>
           <Select size="large">
             {pets?.map(pet => <Select.Option value={pet.id}><Avatar src={pet.avatar_url} style={{ marginRight: '10px' }} /> {pet.name}</Select.Option>)}

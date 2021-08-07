@@ -25,9 +25,7 @@ const Main: React.FC<Props> = ({ user }) => {
     }
   }, [error])
 
-  useEffect(() => {
-    resetLike()
-  }, [errorLike])
+  useEffect(() => resetLike(), [errorLike])
 
   useEffect(() => {
     setData([...data || [], ...feeds.filter(feed => !data?.find(d => d.id === feed.id))])
@@ -39,9 +37,7 @@ const Main: React.FC<Props> = ({ user }) => {
     }
   }, [feed])
 
-  useEffect(() => {
-    reset()
-  }, [offset])
+  useEffect(() => reset(), [offset])
 
   const likeFeed = (e: React.MouseEvent, id: string) => {
     e.preventDefault()
@@ -62,9 +58,9 @@ const Main: React.FC<Props> = ({ user }) => {
         renderItem={feed => <List.Item key={feed.id}>
           <Link style={{ width: '100%' }} to={`/feed/${feed.id}`}>
             <Card hoverable cover={<img src={feed.url} alt={feed.url} />} actions={[
-              <Button disabled={loadingLike} key="like"
+              <Button disabled={loadingLike === feed.id} key="like"
                 onClick={e => likeFeed(e, feed.id)} type="text" danger
-                icon={loadingLike ? <Spin /> : feed.likes?.includes(user.email) ? <HeartFilled /> : <HeartOutlined />}>
+                icon={loadingLike === feed.id ? <Spin /> : feed.likes?.includes(user.email) ? <HeartFilled /> : <HeartOutlined />}>
                 &nbsp; {feed.likes?.length || 0}
               </Button>,
               <Button key="comment" type="text" icon={<CommentOutlined />}></Button>
