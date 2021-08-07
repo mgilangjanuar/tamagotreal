@@ -17,6 +17,9 @@ Tamagotreal is live at [tamagotreal.vercel.app](https://tamagotreal.vercel.app)!
   <img width="200" src="./web/public/photo_2021-08-06&#32;23.56.37.jpeg" />
   <img width="200" src="./web/public/photo_2021-08-06&#32;23.56.24.jpeg" />
 </p>
+<figure class="video_container">
+  <iframe src="https://user-images.githubusercontent.com/3146378/128583685-4ec6696d-66c4-43e3-a3d3-826d846e1323.mov" frameborder="0" allowfullscreen="true"> </iframe>
+</figure>
 
 This is the open source project of pet social media to expose your cute pet and will be the eyebleach for others. Tamagotreal uses [Supabase](https://supabase.io) to:
 
