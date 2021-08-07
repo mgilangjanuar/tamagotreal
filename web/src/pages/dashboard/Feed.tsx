@@ -161,7 +161,7 @@ const Feed: React.FC<PageProps> = ({ match }) => {
                   <Card.Meta
                     title={comment?.pet.name}
                     avatar={<Avatar src={comment?.pet.avatar_url} />}
-                    description={moment(comment.started_at).fromNow()} />
+                    description={moment(comment.created_at).fromNow()} />
                   <div>
                     <Typography.Paragraph style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap', margin: '15px 0 0 0' }}>
                       {comment?.content}
