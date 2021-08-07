@@ -1,19 +1,16 @@
 import { GithubOutlined, GoogleOutlined, TwitterOutlined } from '@ant-design/icons'
-import { Button, Modal, Typography } from 'antd'
+import { Button, Typography } from 'antd'
 import JSCookie from 'js-cookie'
-import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router'
+import React, { useEffect } from 'react'
 import { useAuthUrl } from './useAuthUrl'
 import { useMe } from './useMe'
 import { useRefreshToken } from './useRefreshToken'
 
-export function useLogin(): [() => void, React.FC, any] {
-  const [isModalVisible, setIsModalVisible] = useState(false)
+export function useLogin(): [React.FC, any] {
   const [refreshToken] = useRefreshToken()
 
   const url = useAuthUrl()
   const [user, refetch] = useMe()
-  const history = useHistory()
 
   useEffect(() => {
     if (!user && JSCookie.get('refresh_token')) {
@@ -23,14 +20,8 @@ export function useLogin(): [() => void, React.FC, any] {
   }, [user])
 
   return [() => {
-    if (user) {
-      history.push('/dashboard')
-    } else {
-      setIsModalVisible(true)
-    }
-  }, () => {
     const login = (provider: string) => window.location.replace((url as any)?.[provider] as string)
-    return <Modal title="Sign In" visible={isModalVisible} footer={null} onCancel={() => setIsModalVisible(false)}>
+    return <div>
       <Typography.Paragraph style={{ textAlign: 'center' }}>
         <Button onClick={() => login('google')} type="default" block icon={<GoogleOutlined />}>Sign in with Google</Button>
       </Typography.Paragraph>
@@ -40,6 +31,6 @@ export function useLogin(): [() => void, React.FC, any] {
       <Typography.Paragraph style={{ textAlign: 'center' }}>
         <Button onClick={() => login('github')} style={{ background: '#000', color: '#fff' }} block icon={<GithubOutlined />}>Sign in with GitHub</Button>
       </Typography.Paragraph>
-    </Modal>
+    </div>
   }, user]
 }

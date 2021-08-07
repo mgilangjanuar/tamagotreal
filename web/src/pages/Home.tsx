@@ -1,13 +1,15 @@
-import { Button, Layout, Typography } from 'antd'
+import { Col, Divider, Layout, Row, Typography } from 'antd'
 import JSCookie from 'js-cookie'
 import QueryString from 'querystring'
 import React, { useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 import { useLogin } from '../hooks/useLogin'
 
 const Home: React.FC = () => {
-  const [loginAction, LoginModal] = useLogin()
+  const [LoginComponent, user] = useLogin()
+  const history = useHistory()
 
   useEffect(() => {
     const token = QueryString.decode(window.location.hash.replace(/^\#/gi, ''))
@@ -22,21 +24,30 @@ const Home: React.FC = () => {
     window.scrollTo(0, 0)
   }, [])
 
+  useEffect(() => {
+    if (user) {
+      history.push('/dashboard')
+    }
+  }, [user])
+
   return <div>
     <Navbar />
-    <Layout.Content style={{ minHeight: '76vh', position: 'relative' }}>
-      <div style={{ textAlign: 'center', padding: '10px 20px', position: 'absolute', top: '50%', transform: 'translateY(-50%)', msTransform: 'translateY(-50%)', width: '100%' }}>
-        <Typography.Paragraph>
-          <img src="/tamagotchi.png" style={{ width: '100%', maxWidth: '600px' }} />
-        </Typography.Paragraph>
-        <Typography.Paragraph>
-          <Button onClick={loginAction} size="large" type="primary">Join Now! 🐹</Button>
-        </Typography.Paragraph>
-        <Typography.Paragraph>
-          <Typography.Text type="secondary">Tamagotchi for your real pets</Typography.Text>
-        </Typography.Paragraph>
-      </div>
-      <LoginModal />
+    <Layout.Content style={{ minHeight: '76vh', marginTop: '40px' }}>
+      <Row>
+        <Col lg={{ span: 10, offset: 7 }} md={{ span: 16, offset: 4 }} sm={{ span: 20, offset: 2 }} span={24}>
+          <Typography.Paragraph style={{ textAlign: 'center' }}>
+            <img src="/Screen Shot 2021-08-07 at 09.29.14_samsung-galaxys20-cosmicgrey-portrait.png" style={{ width: '100%', maxWidth: '180px' }} />
+            <img src="/Screen Shot 2021-08-07 at 09.32.27_samsung-galaxys20-cosmicgrey-portrait.png" style={{ width: '100%', maxWidth: '180px' }} />
+          </Typography.Paragraph>
+          <div style={{ padding: '10px 10px 24px' }}>
+            <Typography.Paragraph style={{ textAlign: 'center' }}>
+              <Typography.Text type="secondary">Tamagotchi for your real pets 🐹 🐱 🐶</Typography.Text>
+            </Typography.Paragraph>
+            <Divider>Sign In</Divider>
+            <LoginComponent />
+          </div>
+        </Col>
+      </Row>
     </Layout.Content>
 
     <Footer />
