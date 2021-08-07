@@ -1,14 +1,16 @@
 import axios from 'axios'
 import { useState } from 'react'
 
-export function useUpdate(): [(id: string, data: Record<string, any>) => void, string | null, any, () => void] {
+export function useUpdate(): [(id: string, data: Record<string, any>) => void, string | null, any, any, () => void] {
   const [error, setError] = useState<any>(undefined)
+  const [feed, setFeed] = useState<any>()
   const [loading, setLoading] = useState<string | null>(null)
 
   return [(id: string, data: Record<string, string>) => {
     setLoading(id)
     axios.patch(`${process.env.REACT_APP_API_URL}/api/feeds/${id}`, data, { withCredentials: true })
-      .then(() => {
+      .then(({ data }) => {
+        setFeed(data.feed)
         setError(null)
         setLoading(null)
       })
@@ -16,5 +18,5 @@ export function useUpdate(): [(id: string, data: Record<string, any>) => void, s
         setError(error.response || error)
         setLoading(null)
       })
-  }, loading, error, () => setError(undefined)]
+  }, loading, feed, error, () => setError(undefined)]
 }
