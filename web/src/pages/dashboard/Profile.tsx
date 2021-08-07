@@ -36,7 +36,9 @@ const Profile: React.FC<Props> = ({ user }) => {
   const size = 8
 
   useEffect(() => {
-    getPets({ owner: user?.email })
+    if (user) {
+      getPets({ owner: user?.email })
+    }
   }, [user])
 
   useEffect(() => {
@@ -107,9 +109,9 @@ const Profile: React.FC<Props> = ({ user }) => {
 
 const PetForm: React.FC<PetFormProps> = ({ field, remove: removeField, form, index }) => {
   const [showDrawer, setShowDrawer] = useState<boolean>(!form.getFieldValue('pets')?.[index]?.name)
-  const [save, pet, errorCreate, resetCreate] = useCreate()
-  const [remove, errorRemove, resetRemove] = useRemove()
-  const [update, errorUpdate, resetUpdate] = useUpdate()
+  const [save, loadingCreate, pet, errorCreate, resetCreate] = useCreate()
+  const [remove, loadingRemove, errorRemove, resetRemove] = useRemove()
+  const [update, loadingUpdate, errorUpdate, resetUpdate] = useUpdate()
   const [img, setImg] = useState<any>()
 
   useEffect(() => {
@@ -252,7 +254,7 @@ const PetForm: React.FC<PetFormProps> = ({ field, remove: removeField, form, ind
           <Input />
         </Form.Item>
         <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 24 }} {...field} label="Birth Date" name={[field.name, 'birth_date']} fieldKey={[field.fieldKey, 'birth_date']}>
-          <DatePicker format="YYYY-MM-DD" />
+          <DatePicker style={{ width: '100%' }} format="YYYY-MM-DD" />
         </Form.Item>
         <Form.Item hidden {...field} name={[field.name, 'id']} fieldKey={[field.fieldKey, 'id']}>
           <Input type="hidden" />
@@ -263,9 +265,13 @@ const PetForm: React.FC<PetFormProps> = ({ field, remove: removeField, form, ind
         <Form.Item style={{ marginTop: '20px' }}>
           <Space style={{ float: 'right' }}>
             <Popconfirm title="Are you sure to delete this?" onConfirm={removeItem}>
-              <Button type="link" danger icon={<DeleteOutlined />}>Remove</Button>
+              <Button loading={loadingRemove === form.getFieldValue('pets')?.[index]?.id} type="link" danger icon={<DeleteOutlined />}>Remove</Button>
             </Popconfirm>
-            <Button type="primary" icon={form.getFieldValue('pets')?.[index]?.id ? <EditOutlined /> : <SaveOutlined />} onClick={saveItem}>{form.getFieldValue('pets')?.[index]?.id ? 'Update' : 'Save'}</Button>
+            <Button loading={loadingCreate || loadingUpdate === form.getFieldValue('pets')?.[index]?.id} type="primary"
+              icon={form.getFieldValue('pets')?.[index]?.id ? <EditOutlined /> : <SaveOutlined />}
+              onClick={saveItem}>
+              {form.getFieldValue('pets')?.[index]?.id ? 'Update' : 'Save'}
+            </Button>
           </Space>
         </Form.Item>
       </div>

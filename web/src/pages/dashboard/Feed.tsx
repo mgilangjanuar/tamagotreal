@@ -10,8 +10,8 @@ import Navigation from '../../components/Navigation'
 import { useCreate } from '../../hooks/comment/useCreate'
 import { useFind as useFindComments } from '../../hooks/comment/useFind'
 import { useRemove } from '../../hooks/comment/useRemove'
-import { useDelete } from '../../hooks/feed/useDelete'
 import { useLike } from '../../hooks/feed/useLike'
+import { useRemove as useRemoveFeed } from '../../hooks/feed/useRemove'
 import { useRetrieve } from '../../hooks/feed/useRetrieve'
 import { useUpdate } from '../../hooks/feed/useUpdate'
 import { useFind } from '../../hooks/pet/useFind'
@@ -27,9 +27,9 @@ const Feed: React.FC<PageProps> = ({ match }) => {
   const [showDrawer, setShowDrawer] = useState<boolean>()
   const [user] = useMe()
   const [retrieve, feed, error, reset] = useRetrieve()
-  const [update, errorUpdate, resetUpdate] = useUpdate()
+  const [update, loadingUpdate, errorUpdate, resetUpdate] = useUpdate()
   const [like, loadingLike, feedLike] = useLike()
-  const [remove, errorRemove] = useDelete()
+  const [remove, loadingRemove, errorRemove] = useRemoveFeed()
   const [form] = useForm()
   const [formComment] = useForm()
   const [findPets, pets] = useFind()
@@ -145,7 +145,7 @@ const Feed: React.FC<PageProps> = ({ match }) => {
       <Layout.Content style={{ padding: '10px 10px 24px', margin: 0, minHeight: 280 }}>
         <Row style={{ minHeight: '85vh', padding: '0 0 70px' }}>
           <Col lg={{ span: 10, offset: 7 }} md={{ span: 16, offset: 4 }} sm={{ span: 20, offset: 2 }} span={24}>
-            <Card hoverable cover={<img src={feed?.url} alt={feed?.url} />} actions={[
+            <Card loading={!feed} hoverable cover={<img src={feed?.url} alt={feed?.url} />} actions={[
               <Button loading={loadingLike === feed.id} key="like"
                 onClick={() => like(feed?.id)} type="text" danger
                 icon={feed?.likes?.includes(user?.email) ? <HeartFilled /> : <HeartOutlined />}>
@@ -158,7 +158,7 @@ const Feed: React.FC<PageProps> = ({ match }) => {
               </Tooltip>
               <Tooltip title="Delete">
                 <Popconfirm title="Are you sure to delete this?" onConfirm={() => remove(feed?.id)}>
-                  <Button icon={<DeleteOutlined />} danger type="text" shape="circle" />
+                  <Button loading={loadingRemove === feed?.id} icon={<DeleteOutlined />} danger type="text" shape="circle" />
                 </Popconfirm>
               </Tooltip>
             </Space> : null}>
@@ -236,7 +236,7 @@ const Feed: React.FC<PageProps> = ({ match }) => {
           <Input.TextArea />
         </Form.Item>
         <Form.Item style={{ marginTop: '20px', float: 'right' }}>
-          <Button type="primary" icon={<EditOutlined />} htmlType="submit">Update</Button>
+          <Button loading={loadingUpdate === feed.id} type="primary" icon={<EditOutlined />} htmlType="submit">Update</Button>
         </Form.Item>
       </Form>
     </Drawer>
