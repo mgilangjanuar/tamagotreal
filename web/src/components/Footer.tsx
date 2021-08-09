@@ -1,4 +1,4 @@
-import { HeartFilled, GithubFilled } from '@ant-design/icons'
+import { HeartFilled, GithubFilled, LineChartOutlined } from '@ant-design/icons'
 import { Divider, Layout, Space, Typography } from 'antd'
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -9,7 +9,11 @@ const Footer: React.FC = () => {
     <Typography.Paragraph>
       <Typography.Text>🐹 Tamagotreal &copy; 2021</Typography.Text><br />
       <Typography.Text type="secondary">
-        <Link to="/">Home</Link> &middot; <Link to="/terms">Terms</Link> &middot; <Link to="/privacy">Privacy</Link> &middot; <a href="https://github.com/mgilangjanuar/tamagotreal"><GithubFilled /> GitHub</a>
+        <Link to="/">Home</Link> &middot;&nbsp;
+        <Link to="/terms">Terms</Link> &middot;&nbsp;
+        <Link to="/privacy">Privacy</Link> &middot;&nbsp;
+        <a href="https://app.splitbee.io/public/tamagotreal.vercel.app"><LineChartOutlined /> Analytics</a>  &middot;&nbsp;
+        <a href="https://github.com/mgilangjanuar/tamagotreal"><GithubFilled /> GitHub</a>
       </Typography.Text>
     </Typography.Paragraph>
     <br />
