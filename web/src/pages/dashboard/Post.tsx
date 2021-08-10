@@ -16,7 +16,7 @@ interface Props {
 const Post: React.FC<Props> = ({ user }) => {
   const [form] = useForm()
   const [img, setImg] = useState<any>()
-  const [findPets, pets] = useFind()
+  const [findPets, pets, errorPets] = useFind()
   const [create, loading, error, reset] = useCreate()
   const history = useHistory()
 
@@ -27,6 +27,13 @@ const Post: React.FC<Props> = ({ user }) => {
   useEffect(() => {
     form.setFieldsValue({ url: img?.file.Location })
   }, [img])
+
+  useEffect(() => {
+    if (errorPets === null && !pets?.length) {
+      message.info('Please add your pet first')
+      return history.push('/dashboard/profile')
+    }
+  }, [errorPets, pets])
 
   useEffect(() => {
     if (error) {
